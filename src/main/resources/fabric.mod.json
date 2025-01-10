@@ -16,7 +16,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.bcsmp.BCSMPS2Content"
+			"com.bcsmp.BCSMPS2ContentMain"
 		],
 		"client": [
 			"com.bcsmp.client.BCSMPS2ContentClient"
