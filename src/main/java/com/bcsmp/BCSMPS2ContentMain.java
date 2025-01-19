@@ -24,5 +24,6 @@ public class BCSMPS2ContentMain implements ModInitializer {
 		//Domain Expansion Mod
 		DEModItems.registerDomainExpansionItems();
 		DEModBlocks.registerDomainExpansionBlocks();
+		DEModEntities.registerDomainExpansionEntities();
 	}
 }
