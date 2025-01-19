@@ -21,7 +21,18 @@ public class DomainExpansionItem extends Item {
         ItemStack handStack = player.getStackInHand(hand);
         if (!world.isClient) {
             player.sendMessage(Text.literal("balls").formatted(Formatting.BOLD).formatted(Formatting.AQUA), true);
+            if (!player.isSneaking()) {
+                this.getPlayersInRange(world, player);
+            }
         }
         return TypedActionResult.pass(handStack);
+    }
+
+    public int getDomainRadius(PlayerEntity player) {
+        player.getExperienceLevel
+    }
+
+    public List<PlayerEntity> getPlayersInRange(World world, PlayerEntity player) {
+        Box box = player.getBoundingBox().expand(-10.0, -10.0, -10.0, 10.0, 10.0, 10.0);
     }
 }
