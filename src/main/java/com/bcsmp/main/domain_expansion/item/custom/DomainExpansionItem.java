@@ -37,7 +37,7 @@ public class DomainExpansionItem extends Item {
         List<PlayerEntity> entitiesInBox = world.getEntitiesByClass(PlayerEntity.class, box, EntityPredicates.EXCEPT_SPECTATOR);
         DefaultedList<PlayerEntity> entitiesInSphere = DefaultedList.of();
         for (PlayerEntity target : entitiesInBox) {
-            if (player.distanceTo(target.getPos) <= this.getDomainRadius) {
+            if (player.distanceTo(target.getPos) <= this.getDomainRadius(player) && target != player) {
                 entitiesInSphere.add(target);
             }
         }
