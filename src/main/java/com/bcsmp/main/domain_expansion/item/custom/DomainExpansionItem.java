@@ -28,11 +28,19 @@ public class DomainExpansionItem extends Item {
         return TypedActionResult.pass(handStack);
     }
 
-    public int getDomainRadius(PlayerEntity player) {
-        player.getExperienceLevel
+    public float getDomainRadius(PlayerEntity player) {
+        return (float) (player.experienceLevel + 10);
     }
 
-    public List<PlayerEntity> getPlayersInRange(World world, PlayerEntity player) {
-        Box box = player.getBoundingBox().expand(-10.0, -10.0, -10.0, 10.0, 10.0, 10.0);
+    public DefaultedList<PlayerEntity> getPlayersInRange(World world, PlayerEntity player) {
+        Box box = player.getBoundingBox().expand(-this.getDomainRadius(player), -this.getDomainRadius(player), -this.getDomainRadius(player), this.getDomainRadius(player), this.getDomainRadius(player), this.getDomainRadius(player));
+        List<PlayerEntity> entitiesInBox = world.getEntitiesByClass(PlayerEntity.class, box, EntityPredicates.EXCEPT_SPECTATOR);
+        DefaultedList<PlayerEntity> entitiesInSphere = DefaultedList.of();
+        for (PlayerEntity target : entitiesInBox) {
+            if (player.distanceTo(target.getPos) <= this.getDomainRadius) {
+                entitiesInSphere.add(target);
+            }
+        }
+        return entitiesInSphere;
     }
 }
