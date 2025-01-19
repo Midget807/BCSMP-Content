@@ -25,6 +25,11 @@
 			"com.bcsmp.BCSMPS2ContentDataGenerator"
 		]
 	},
+	"custom": {
+		"cardinal-components": [
+			
+		]
+	},
 	"mixins": [
 		"bcsmp_s2_content.mixins.json"
 	],
