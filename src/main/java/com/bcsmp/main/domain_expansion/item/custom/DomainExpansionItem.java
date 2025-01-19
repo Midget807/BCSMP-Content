@@ -10,6 +10,7 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 public class DomainExpansionItem extends Item {
+    public DefaultedList<PlayerEntity> targets;
 
     public DomainExpansionItem(Settings settings) {
         super(settings);
@@ -22,7 +23,23 @@ public class DomainExpansionItem extends Item {
         if (!world.isClient) {
             player.sendMessage(Text.literal("balls").formatted(Formatting.BOLD).formatted(Formatting.AQUA), true);
             if (!player.isSneaking()) {
-                this.getPlayersInRange(world, player);
+                targets = this.getPlayersInRange(world, player);
+                //Sends Messages
+                if (targets.isEmpty()) {
+                    player.sendMessage(Text.literal("No players within range").formatted(Formatting.RED), true);
+                } else {
+                    for (PlayerEntity target : targets) {
+                        target.sendMessage(Text.literal("You are within range of ").formatted(Formatting.RED).append(Text.literal(player.getName() + "'s").formatted(Formatting.BOLD).formatting(Formatted.RED).append(Text.literal(" domain expansion").formatted(Formatting.RED)))), true);
+                        if (targets.getSize() == 1) {
+                            player.sendMessage(Text.literal(targets.getsize() + " player within range").formatted(Formatting.AQUA), true);
+                        } else {
+                            player.sendMessage(Text.literal(targets.getsize() + " players within range").formatted(Formatting.AQUA), true);
+                        }
+                    }
+                }
+                
+            } else {
+                
             }
         }
         return TypedActionResult.pass(handStack);
