@@ -39,7 +39,7 @@ public class DomainExpansionItem extends Item {
                 }
                 
             } else {
-                
+                //Teleports players to domain dimension
             }
         }
         return TypedActionResult.pass(handStack);
