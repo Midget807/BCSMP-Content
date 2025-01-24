@@ -1,7 +1,10 @@
 package com.bcsmp;
 
+import com.bcsmp.main.domain_expansion.block.DEModBlockEntities;
 import com.bcsmp.main.domain_expansion.block.DEModBlocks;
+import com.bcsmp.main.domain_expansion.entity.DEModEntities;
 import com.bcsmp.main.domain_expansion.item.DEModItems;
+import com.bcsmp.main.domain_expansion.screen.DEModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.util.Identifier;
@@ -24,7 +27,8 @@ public class BCSMPS2ContentMain implements ModInitializer {
 		//Domain Expansion Mod
 		DEModItems.registerDomainExpansionItems();
 		DEModBlocks.registerDomainExpansionBlocks();
+		DEModBlockEntities.registerDomainExpansionBlockEntities();
 		DEModEntities.registerDomainExpansionEntities();
-		DEModScreenHandlers.registerDomainExpansionScreenHanders();
+		DEModScreenHandlers.registerDomainExpansionScreenHandlers();
 	}
 }

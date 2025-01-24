@@ -19,7 +19,7 @@
 			"com.bcsmp.BCSMPS2ContentMain"
 		],
 		"client": [
-			"com.bcsmp.client.BCSMPS2ContentClient"
+			"com.bcsmp.BCSMPS2ContentClient"
 		],
 		"fabric-datagen": [
 			"com.bcsmp.BCSMPS2ContentDataGenerator"
@@ -27,7 +27,7 @@
 	},
 	"custom": {
 		"cardinal-components": [
-			
+			"domain_expansion:domain_usage"
 		]
 	},
 	"mixins": [

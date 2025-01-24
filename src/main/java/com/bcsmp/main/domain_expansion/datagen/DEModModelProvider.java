@@ -1,5 +1,6 @@
 package com.bcsmp.main.domain_expansion.datagen;
 
+import com.bcsmp.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.main.domain_expansion.item.DEModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -17,11 +18,12 @@ public class DEModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-
+        blockStateModelGenerator.registerSimpleState(DEModBlocks.DOMAIN_PILLAR);
     }
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(DEModItems.DEBUGGER, Items.STICK, Models.GENERATED);
+        itemModelGenerator.register(DEModItems.DOMAIN_EXPANDER, Items.NETHER_STAR, Models.GENERATED);
     }
 }
