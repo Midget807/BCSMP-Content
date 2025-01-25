@@ -19,6 +19,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.PacketByteBuf;
@@ -89,7 +90,7 @@ public class DomainPillarBlockEntity extends LockableContainerBlockEntity implem
 
     @Override
     public int size() {
-        return 1;
+        return this.inventory.size();
     }
 
 

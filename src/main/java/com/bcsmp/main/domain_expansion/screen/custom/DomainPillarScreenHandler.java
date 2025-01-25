@@ -27,9 +27,8 @@ public class DomainPillarScreenHandler extends ScreenHandler {
         this.inventory = inventory;
         checkSize(inventory, 1);
         inventory.onOpen(playerInventory.player);
-        
-        //adds available domain occupancy slots
-        this.addSlot(new Slot(inventory, 0, 17 + 18, 20));
+
+        this.addSlot(new Slot(inventory, 0, 17 + 3 * 18, 20));
 
     }
 

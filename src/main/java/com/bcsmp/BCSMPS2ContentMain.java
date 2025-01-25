@@ -4,6 +4,7 @@ import com.bcsmp.main.domain_expansion.block.DEModBlockEntities;
 import com.bcsmp.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.main.domain_expansion.entity.DEModEntities;
 import com.bcsmp.main.domain_expansion.item.DEModItems;
+import com.bcsmp.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.main.domain_expansion.screen.DEModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
 
@@ -30,5 +31,6 @@ public class BCSMPS2ContentMain implements ModInitializer {
 		DEModBlockEntities.registerDomainExpansionBlockEntities();
 		DEModEntities.registerDomainExpansionEntities();
 		DEModScreenHandlers.registerDomainExpansionScreenHandlers();
+		DEModMessages.registerC2SPackets();
 	}
 }
