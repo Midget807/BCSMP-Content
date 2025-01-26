@@ -1,0 +1,21 @@
+{
+  "type": "domain_expansion:global_domain_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "domain_expansion:barrens",
+      "lakes": false,
+      "features": true,
+      "layers": [
+        {
+          "height": 63,
+          "block": "minecraft:red_sandstone"
+        },
+        {
+          "height": 1,
+          "block": "minecraft:red_sand"
+        }
+      ]
+    }
+  }
+}

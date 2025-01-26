@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "minecraft:item/nether_star"
+    "layer0": "domain_expansion:item/domain_expander"
   }
 }

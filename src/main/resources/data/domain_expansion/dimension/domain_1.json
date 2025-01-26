@@ -1,0 +1,17 @@
+{
+  "type": "domain_expansion:global_domain_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "domain_expansion:dark_plains",
+      "lakes": false,
+      "features": true,
+      "layers": [
+        {
+          "height": 64,
+          "block": "minecraft:coal_block"
+        }
+      ]
+    }
+  }
+}

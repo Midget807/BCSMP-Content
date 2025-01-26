@@ -1,0 +1,25 @@
+{
+  "type": "domain_expansion:global_domain_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "domain_expansion:tundra",
+      "lakes": false,
+      "features": true,
+      "layers": [
+        {
+          "height": 32,
+          "block": "minecraft:blue_ice"
+        },
+        {
+          "height": 31,
+          "block": "minecraft:packed_ice"
+        },
+        {
+          "height": 1,
+          "block": "minecraft:ice"
+        }
+      ]
+    }
+  }
+}

@@ -7,7 +7,6 @@ import com.bcsmp.main.domain_expansion.item.DEModItems;
 import com.bcsmp.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.main.domain_expansion.screen.DEModScreenHandlers;
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

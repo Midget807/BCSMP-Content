@@ -24,6 +24,6 @@ public class DEModModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(DEModItems.DEBUGGER, Items.STICK, Models.GENERATED);
-        itemModelGenerator.register(DEModItems.DOMAIN_EXPANDER, Items.NETHER_STAR, Models.GENERATED);
+        itemModelGenerator.register(DEModItems.DOMAIN_EXPANDER, Models.GENERATED);
     }
 }
