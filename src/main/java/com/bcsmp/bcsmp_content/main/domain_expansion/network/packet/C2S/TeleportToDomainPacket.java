@@ -82,7 +82,7 @@ public class TeleportToDomainPacket {
             serverPlayer.networkHandler.syncWithPlayerPosition();
             destination.onPlayerChangeDimension(serverPlayer);
             origin.getProfiler().pop();
-            //serverPlayer.worldChanged(origin);
+            //serverPlayer.worldChanged(origin); todo make private @accessor for ServerPlayer.class methods
             serverPlayer.networkHandler.sendPacket(new PlayerAbilitiesS2CPacket(serverPlayer.getAbilities()));
             playerManager.sendWorldInfo(serverPlayer, destination);
             playerManager.sendPlayerStatus(serverPlayer);
