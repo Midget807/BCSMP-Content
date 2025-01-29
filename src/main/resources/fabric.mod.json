@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "bcsmp_s2_content",
+	"id": "bcsmp_content",
 	"version": "${version}",
-	"name": "BCSMP S2 Content",
+	"name": "BCSMP Content",
 	"description": "This is an example description! Tell everyone what your mod is about!",
 	"authors": [
 		"Midget807"
@@ -12,17 +12,17 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "MIT",
-	"icon": "assets/bcsmp_s2_content/icon.png",
+	"icon": "assets/bcsmp_content/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.bcsmp.BCSMPS2ContentMain"
+			"com.bcsmp.bcsmp_content.BCSMPContentMain"
 		],
 		"client": [
-			"com.bcsmp.BCSMPS2ContentClient"
+			"com.bcsmp.bcsmp_content.BCSMPContentClient"
 		],
 		"fabric-datagen": [
-			"com.bcsmp.BCSMPS2ContentDataGenerator"
+			"com.bcsmp.bcsmp_content.BCSMPContentDataGenerator"
 		]
 	},
 	"custom": {
@@ -31,7 +31,7 @@
 		]
 	},
 	"mixins": [
-		"bcsmp_s2_content.mixins.json"
+		"bcsmp_content.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",

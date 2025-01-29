@@ -1,5 +1,5 @@
 {
-  "type": "domain_expansion:global_domain_type",
+  "type": "domain_expansion:global_domain_day_type",
   "generator": {
     "type": "minecraft:flat",
     "settings": {
@@ -8,12 +8,12 @@
       "features": true,
       "layers": [
         {
-          "height": 63,
-          "block": "minecraft:red_sandstone"
+          "height": 1,
+          "block": "minecraft:barrier"
         },
         {
-          "height": 1,
-          "block": "minecraft:red_sand"
+          "height": 63,
+          "block": "minecraft:orange_stained_glass"
         }
       ]
     }

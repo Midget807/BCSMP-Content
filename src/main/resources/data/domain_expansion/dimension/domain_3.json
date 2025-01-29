@@ -1,5 +1,5 @@
 {
-  "type": "domain_expansion:global_domain_type",
+  "type": "domain_expansion:global_domain_day_type",
   "generator": {
     "type": "minecraft:flat",
     "settings": {
@@ -8,7 +8,11 @@
       "features": true,
       "layers": [
         {
-          "height": 32,
+          "height": 1,
+          "block": "minecraft:barrier"
+        },
+        {
+          "height": 31,
           "block": "minecraft:blue_ice"
         },
         {
