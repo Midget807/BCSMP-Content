@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "X": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "pattern": [
+    "SDS",
+    "SDS",
+    "SXS"
+  ],
+  "result": {
+    "item": "domain_expansion:domain_pillar"
+  },
+  "show_notification": true
+}

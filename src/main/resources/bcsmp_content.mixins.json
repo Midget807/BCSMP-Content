@@ -1,14 +1,13 @@
 {
-	"required": true,
-	"package": "com.bcsmp.bcsmp_content.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
+  "required": true,
+  "package": "com.bcsmp.bcsmp_content.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
 
-	],
-	"client": [
-
-	],
-	"injectors": {
-		"defaultRequire": 1
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }

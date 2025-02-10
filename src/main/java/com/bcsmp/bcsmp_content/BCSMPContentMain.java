@@ -7,6 +7,8 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItemGroups;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.DEModScreenHandlers;
+import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.surface.DEModBiomeModifier;
+import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.DEModFeatures;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -32,5 +34,7 @@ public class BCSMPContentMain implements ModInitializer {
 		DEModEntities.registerDomainExpansionEntities();
 		DEModScreenHandlers.registerDomainExpansionScreenHandlers();
 		DEModMessages.registerC2SPackets();
+		DEModFeatures.registerDomainExpansionFeatures();
+		DEModBiomeModifier.registerDomainExpansionBiomeModifier();
 	}
 }

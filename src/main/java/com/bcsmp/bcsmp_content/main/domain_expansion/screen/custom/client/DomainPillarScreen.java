@@ -56,7 +56,11 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
             DomainPillarScreenHandler domainPillarScreenHandler = (DomainPillarScreenHandler) this.client.player.currentScreenHandler;
             if (domainPillarScreenHandler.getInventory().getStack(0).getItem() == DEModItems.DOMAIN_EXPANDER) {
                 ItemStack expander = domainPillarScreenHandler.getInventory().getStack(0);
-                if (expander.getNbt() != null) {
+                if (expander.getNbt() != null &&
+                        expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY) != null &&
+                        expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE) != null &&
+                        expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY) >= 10
+                ) {
                     buf.writeBlockPos(this.client.player.getBlockPos());
                     buf.writeFloat(expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY));
 
