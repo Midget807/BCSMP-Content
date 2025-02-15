@@ -13,7 +13,7 @@
         },
         {
           "height": 63,
-          "block": "minecraft:coal_block"
+          "block": "domain_expansion:withered_soil"
         }
       ]
     }
