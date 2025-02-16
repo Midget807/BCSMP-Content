@@ -3,7 +3,10 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.custom;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.block.Blocks;
+import net.minecraft.text.Text;
+import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
@@ -25,7 +28,7 @@ public class ObsidianSpikeFeature extends Feature<DefaultFeatureConfig> {
             origin = origin.down();
         }
 
-        if (!structureWorldAccess.getBlockState(origin).isOf(Blocks.COAL_BLOCK) ||
+        if (!structureWorldAccess.getBlockState(origin).isOf(DEModBlocks.WITHERED_SOIL) ||
                 structureWorldAccess.getBlockState(origin).isOf(Blocks.AIR)
         ) {
             return false;
@@ -38,16 +41,19 @@ public class ObsidianSpikeFeature extends Feature<DefaultFeatureConfig> {
                 origin = origin.up(10 + random.nextInt(30));
             }
 
-            //spike structure todo make actual structure and use a rng to choose direction (4) and size (3)
-            this.generateSpike(SpikeRotation.getRandomRotation(random), SpikeSize.getRandomSize(random), SpikeShape.getRandomShape(random), origin, structureWorldAccess);
 
-            //todo Debug -> just make preset shapes
             if (!(origin.getY() >= 0)) {
-                this.setBlockState(structureWorldAccess, origin, Blocks.GOLD_BLOCK.getDefaultState());
-                for (int k = 1; k < 10; k++) {
-                    this.setBlockState(structureWorldAccess, origin.add(0, k, 0), Blocks.OBSIDIAN.getDefaultState());
+                //prevents spawn from being shat on
+                for (int n = 0; i < 10; i++) {
+                    for (int o = 0; j < 10; j++) {
+                        if (origin.equals(new BlockPos(n, -1, o))) {
+                            return false;
+                        }
+                    }
                 }
 
+                //spike
+                this.generateSpike(SpikeRotation.getRandomRotation(random), SpikeSize.getRandomSize(random), SpikeShape.getRandomShape(random), origin, structureWorldAccess);
             }
 
             return true;
@@ -55,198 +61,573 @@ public class ObsidianSpikeFeature extends Feature<DefaultFeatureConfig> {
     }
 
     private void generateSpike(SpikeRotation.Rotation rotation, SpikeSize.Size size, SpikeShape.Shape shape, BlockPos origin, StructureWorldAccess structureWorldAccess) {
-        switch (rotation) {
-            case EAST: {
+        switch (shape) {
+            case CURVE: {
+
+                //break;
+            }
+            case WIDE: {
                 switch (size) {
                     case MEDIUM: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
+                        //break;
                     }
                     case LARGE: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
+                        //break;
                     }
-                    default: {
-                        switch (shape) {
-                            case CURVE: {
+                    default: case SMALL: {
+                        this.generateSmallWideBase(structureWorldAccess, origin);
+                        switch (rotation) {
+                            case EAST: {
 
+                                //break;
                             }
-                            case WIDE: {
+                            case SOUTH: {
 
+                                //break;
                             }
-                            default: {
+                            case WEST: {
 
+                                //break
+                            }
+                            default: case NORTH: {
+
+                                break;
                             }
                         }
+                        break;
                     }
                 }
+                //break;
             }
-            case SOUTH: {
+            default: case THIN: {
                 switch (size) {
                     case MEDIUM: {
-                        switch (shape) {
-                            case CURVE: {
 
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
+                        //break;
                     }
                     case LARGE: {
-                        switch (shape) {
-                            case CURVE: {
 
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
+                        //break;
                     }
-                    default: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
-                    }
-                }
-            }
-            case WEST: {
-                switch (size) {
-                    case MEDIUM: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
-                    }
-                    case LARGE: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
-                    }
-                    default: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
-                    }
-                }
-            }
-            default /*NORTH*/: {
-                switch (size) {
-                    case MEDIUM: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
-                    }
-                    case LARGE: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default: {
-
-                            }
-                        }
-                    }
-                    default /*SMALL*/: {
-                        switch (shape) {
-                            case CURVE: {
-
-                            }
-                            case WIDE: {
-
-                            }
-                            default  /*THIN*/: {
+                    default: case SMALL: {
+                        this.generateSmallThinBase(structureWorldAccess, origin);
+                        switch (rotation) {
+                            case EAST: {
                                 /*
-                                * Makes:
-                                *       []
-                                *     [][][]
-                                *   [][][][][]
-                                * [][][][][][][]
-                                *   [][][][][]
-                                *     [][][]
-                                *       []
-                                * */
-                                int j1 = 0;
-                                for (int i = origin.getX() - 3; i < origin.getX() + 3; i++) {
-                                    j1 = (i > 4) ? (j1 - 1) : (j1 + 1);
-                                    for (int j2 = 0; j2 < j1; j2++) {
-                                        this.setBlockState(structureWorldAccess, new BlockPos(i, origin.getY(), origin.getZ() - j2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
-                                        this.setBlockState(structureWorldAccess, new BlockPos(i, origin.getY(), origin.getZ() + j2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()[]()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 6; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-1, 4 + k, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   []()()()()
+                                 * ()[]()()()()()
+                                 *   []()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-2, 1, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-2, 1 + k, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-2, 1 + k, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()[][]
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(1, 1, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 3; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(0, 1 + k, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     [][][]
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(0, 3, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(1, 1, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int i = -1; i <= 0; i++) {
+                                    for (int k = 0; k < 2; k++) {
+                                        this.setBlockState(structureWorldAccess, origin.add(i, 1 + k, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
                                     }
                                 }
 
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()[]()
+                                 * ()()()()()()()
+                                 *   ()()()[]()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(1, 4, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(1, 4, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()[]
+                                 * ()()()()()[]()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                break;
+                            }
+                            case SOUTH: {
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()[]()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 6; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(1, 4 + k, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     [][][]
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 1, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(1, 1 + k, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(0, 1 + k, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()[]()
+                                 *   ()()()()[]
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-2, 1, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 3; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     [][][]
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(2, 3, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(2, 1, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int j = 0; j <= 1; j++) {
+                                    for (int k = 0; k < 2; k++) {
+                                        this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                    }
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()[]()[]()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 4, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(1, 4, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()[][]
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(1, 1 + k, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(0, 1 + k, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                break;
+                            }
+                            case WEST: {
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()[]()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 6; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(1, 4 + k, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()[]
+                                 * ()()()()()[]()
+                                 *   ()()()()[]
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(2, 1, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     [][]()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 1, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 3; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(0, 1 + k, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     [][][]
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(0, 3, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 1, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int i = 0; i <= 1; i++) {
+                                    for (int k = 0; k < 2; k++) {
+                                        this.setBlockState(structureWorldAccess, origin.add(i, 1 + k, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                    }
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()[]()()()
+                                 * ()()()()()()()
+                                 *   ()[]()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 4, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 4, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()[]()()()()()
+                                 *   []()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-2, 1 + k, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-2, 1 + k, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                break;
+                            }
+                            default: case NORTH: {
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()[]()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 6; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-1, 4 + k, 1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     [][][]
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(1, 1, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-1, 1 + k, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(0, 1 + k, 2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   []()()()()
+                                 * ()[]()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(-2, 1, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int k = 0; k < 3; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-2, 1 + k, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()()()()[]
+                                 * ()()()()()[]()
+                                 *   ()()()()[]
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(2, 3, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(2, 1, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                for (int j = -1; j <= 0; j++) {
+                                    for (int k = 0; k < 2; k++) {
+                                        this.setBlockState(structureWorldAccess, origin.add(2, 1 + k, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                    }
+                                }
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     ()()()
+                                 *   ()[]()[]()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                this.setBlockState(structureWorldAccess, origin.add(1, 4, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                this.setBlockState(structureWorldAccess, origin.add(-1, 4, -1), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+
+                                /*
+                                 * Makes:
+                                 *       ()
+                                 *     [][]()
+                                 *   ()()()()()
+                                 * ()()()()()()()
+                                 *   ()()()()()
+                                 *     ()()()
+                                 *       ()
+                                 * */
+                                for (int k = 0; k < 2; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(-1, 1 + k, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                for (int k = 0; k < 5; k++) {
+                                    this.setBlockState(structureWorldAccess, origin.add(0, 1 + k, -2), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                                }
+                                break;
                             }
                         }
+                        break;
                     }
+                }
+                break;
+            }
+        }
+    }
+    private void generateSmallWideBase(StructureWorldAccess structureWorldAccess, BlockPos origin) {
+
+    }
+
+    private void generateSmallThinBase(StructureWorldAccess structureWorldAccess, BlockPos origin) {
+        /*
+         * Makes:
+         *       []
+         *     [][][]
+         *   [][][][][]
+         * [][][][][][][]
+         *   [][][][][]
+         *     [][][]
+         *       []
+         * */
+        for (int i = - 3; i <= 3; i++) {
+            for (int j = 0; j <= (3 - Math.abs(i)); j++) {
+                this.setBlockState(structureWorldAccess, origin.add(i, 0, -j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                this.setBlockState(structureWorldAccess, origin.add(i, 0, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+            }
+        }
+
+        /*
+         * Makes:
+         *       ()
+         *     ()()()
+         *   ()[][][]()
+         * ()()[][][]()()
+         *   ()[][][]()
+         *     ()()()
+         *       ()
+         * */
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                for (int k = 0; k < 3; k++) {
+                    this.setBlockState(structureWorldAccess, origin.add(i, 1 + k, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
                 }
             }
         }
+
+        /*
+         * Makes:
+         *       ()
+         *     ()()()
+         *   ()()[]()()
+         * ()()[][][]()()
+         *   ()()[]()()
+         *     ()()()
+         *       ()
+         * */
+        for (int i = - 1; i <= 1; i++) {
+            for (int j = 0; j <= (1 - Math.abs(i)); j++) {
+                for (int k = 0; k < 4; k++) {
+                    this.setBlockState(structureWorldAccess, origin.add(i, 4 + k, -j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                    this.setBlockState(structureWorldAccess, origin.add(i, 4 + k, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                }
+            }
+        }
+
+        /*
+         * Makes:
+         *       ()
+         *     ()()()
+         *   ()()()()()
+         * ()()()[]()()()
+         *   ()()()()()
+         *     ()()()
+         *       ()
+         * */
+        for (int k = 0; k < 3; k++) {
+            this.setBlockState(structureWorldAccess, new BlockPos(origin.getX(), origin.getY() + 8 + k, origin.getZ()), Blocks.OBSIDIAN.getDefaultState());
+        }
+
+
+        /*
+         * Makes:
+         *       ()
+         *     ()[]()
+         *   ()[][][]()
+         * ()[][]][][][]()
+         *   ()[][][]()
+         *     ()[]()
+         *       ()
+         * */
+        for (int i = - 2; i <= 2; i++) {
+            for (int j = 0; j <= (2 - Math.abs(i)); j++) {
+                this.setBlockState(structureWorldAccess, origin.add(i, -1, -j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                this.setBlockState(structureWorldAccess, origin.add(i, -1, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+            }
+        }
+
+        /*
+         * Makes:
+         *       ()
+         *     ()()()
+         *   ()()[]()()
+         * ()()[][][]()()
+         *   ()()[]()()
+         *     ()()()
+         *       ()
+         * */
+        for (int i = - 1; i <= 1; i++) {
+            for (int j = 0; j <= (1 - Math.abs(i)); j++) {
+                this.setBlockState(structureWorldAccess, origin.add(i, -2, -j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+                this.setBlockState(structureWorldAccess, origin.add(i, -2, j), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+            }
+        }
+
+        /*
+         * Makes:
+         *       ()
+         *     ()()()
+         *   ()()()()()
+         * ()()()[]()()()
+         *   ()()()()()
+         *     ()()()
+         *       ()
+         * */
+        this.setBlockState(structureWorldAccess, origin.add(0, -3, 0), DEModBlocks.DOMAIN_OBSIDIAN.getDefaultState());
+
     }
 
 
