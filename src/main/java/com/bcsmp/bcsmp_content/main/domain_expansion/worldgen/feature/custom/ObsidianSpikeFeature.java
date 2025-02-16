@@ -90,7 +90,7 @@ public class ObsidianSpikeFeature extends Feature<DefaultFeatureConfig> {
                                 //break
                             }
                             default: case NORTH: {
-
+                                // TODO: 16/02/2025 this shit -> smalls only then later update can be for more sizes 
                                 break;
                             }
                         }
