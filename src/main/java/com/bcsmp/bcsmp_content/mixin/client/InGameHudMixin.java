@@ -47,7 +47,7 @@ public abstract class InGameHudMixin {
         }
         if (this.client.player != null) {
             if (this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null && this.client.player.hasStatusEffect(DEModEffects.DOMAIN_TP_EFFECT)) {
-                this.domainTpEffectTicks = this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration();
+                this.domainTpEffectTicks = this.domainTpEffectTicks < 0 ? 200 : this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration();
                 this.domainTpEffectTicks--;
                 this.renderOverlay(context, DEModOverlayIds.DOMAIN_TP_OVERLAY, getDomainTpPercent((float) (this.domainTpEffectTicks / 50), this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration()));
             }
