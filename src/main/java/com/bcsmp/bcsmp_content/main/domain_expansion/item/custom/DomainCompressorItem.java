@@ -1,7 +1,11 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.item.custom;
 
+import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.command.argument.PosArgument;
+import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,10 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.packet.s2c.play.DifficultyS2CPacket;
-import net.minecraft.network.packet.s2c.play.EntityStatusEffectS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerAbilitiesS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket;
+import net.minecraft.network.packet.s2c.play.*;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
@@ -20,6 +21,8 @@ import net.minecraft.server.PlayerManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
@@ -30,10 +33,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
 import net.minecraft.world.biome.source.BiomeAccess;
 
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public class DomainCompressorItem extends Item {
     public static final String CASTER_POS_KEY = "CasterOriginPos";
+    private boolean shouldTick = false;
+
     public DomainCompressorItem(Settings settings) {
         super(settings);
     }
@@ -41,26 +48,43 @@ public class DomainCompressorItem extends Item {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack handStack = user.getStackInHand(hand);
-        if (user.getWorld() instanceof ServerWorld domain) {
-            if (user.isSneaking() && (domain.getDimensionKey() == DEModDimensions.GLOBAL_DOMAIN_DAY_TYPE || domain.getDimensionKey() == DEModDimensions.GLOBAL_DOMAIN_NIGHT_TYPE) && handStack.getNbt() != null) {
+        if (world.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY ||
+                world.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY||
+                world.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY||
+                world.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
+        ) {
+            if (user.isSneaking() && handStack.getNbt() != null) {
                 NbtList nbtList = handStack.getNbt().getList(CASTER_POS_KEY, NbtElement.INT_TYPE);
                 BlockPos casterOriginPos = new BlockPos(nbtList.getInt(0), nbtList.getInt(1), nbtList.getInt(2));
-                List<? extends PlayerEntity> list = world.getPlayers();
-                DefaultedList<PlayerEntity> playersInDomain = DefaultedList.of();
-                playersInDomain.addAll(list);
-                for (PlayerEntity player : playersInDomain) {
-                    ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                    /*teleportPlayersBack(
-                            (ServerWorld) user.getWorld(),
-                            user.getServer().getOverworld(),
-                            serverPlayer,
-                            ((ServerPlayerEntity) user).networkHandler,
-                            user.getServer(),
-                            casterOriginPos
-                    );*/
-                    serverPlayer.teleport(serverPlayer.getServer().getOverworld(), casterOriginPos.getX(), casterOriginPos.getY(), casterOriginPos.getZ(), 0.0f, 0.0f);
+                List<? extends PlayerEntity> players = world.getPlayers();
+
+                if (!world.isClient) {
+                    MinecraftServer server = world.getServer();
+                    if (user instanceof ServerPlayerEntity && server != null) {
+                        ServerWorld overworld = server.getWorld(World.OVERWORLD);
+                        if (overworld != null) {
+                            for (PlayerEntity player : players) {
+                                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                                serverPlayer.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, 8 * 20, 0));
+                                this.shouldTick = true;
+                            }
+                            for (PlayerEntity player : players) {
+                                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+                                if (this.shouldTick) {
+                                    ServerTickEvents.START_SERVER_TICK.register(server1 -> {
+                                        if ((serverPlayer.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null) && serverPlayer.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration() == 0) {
+                                            serverPlayer.teleport(overworld, casterOriginPos.getX(), casterOriginPos.getY(), casterOriginPos.getZ(), serverPlayer.getBodyYaw(), serverPlayer.prevPitch);
+                                            this.shouldTick = false;
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
                 }
             }
+        } else {
+            user.sendMessage(Text.literal("Must be in a domain to use").formatted(Formatting.RED), true);
         }
         return TypedActionResult.consume(handStack);
     }

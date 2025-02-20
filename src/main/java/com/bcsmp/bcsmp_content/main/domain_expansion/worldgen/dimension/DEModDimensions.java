@@ -16,6 +16,12 @@ import java.util.OptionalLong;
 public class DEModDimensions {
     public static final RegistryKey<DimensionOptions> DOMAIN_1_KEY = registerDimensionKey("domain_1");
     public static final RegistryKey<World> DOMAIN_1_LEVEL_KEY = registerDimensionLevelKey("domain_1");
+    public static final RegistryKey<DimensionOptions> DOMAIN_2_KEY = registerDimensionKey("domain_2");
+    public static final RegistryKey<World> DOMAIN_2_LEVEL_KEY = registerDimensionLevelKey("domain_2");
+    public static final RegistryKey<DimensionOptions> DOMAIN_3_KEY = registerDimensionKey("domain_3");
+    public static final RegistryKey<World> DOMAIN_3_LEVEL_KEY = registerDimensionLevelKey("domain_3");
+    public static final RegistryKey<DimensionOptions> DOMAIN_4_KEY = registerDimensionKey("domain_4");
+    public static final RegistryKey<World> DOMAIN_4_LEVEL_KEY = registerDimensionLevelKey("domain_4");
     public static final RegistryKey<DimensionType> GLOBAL_DOMAIN_DAY_TYPE = registerDimensionType("global_domain_day_type");
     public static final RegistryKey<DimensionType> GLOBAL_DOMAIN_NIGHT_TYPE = registerDimensionType("global_domain_night_type");
     public static void bootstrapType(Registerable<DimensionType> context) {

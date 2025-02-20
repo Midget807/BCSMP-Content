@@ -29,14 +29,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
 import net.minecraft.world.biome.source.BiomeAccess;
 
+import java.util.List;
 import java.util.UUID;
 
 public class TeleportToDomainPacket {
+    public static List<RegistryKey<World>> domains = List.of(DEModDimensions.DOMAIN_1_LEVEL_KEY, DEModDimensions.DOMAIN_2_LEVEL_KEY, DEModDimensions.DOMAIN_3_LEVEL_KEY, DEModDimensions.DOMAIN_4_LEVEL_KEY);
     public static void receive(MinecraftServer server, ServerPlayerEntity serverPlayer, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
         boolean isOwner = buf.readBoolean();
         BlockPos casterPos = buf.readBlockPos();
@@ -48,7 +51,7 @@ public class TeleportToDomainPacket {
         CommandManager commandManager = server.getCommandManager();
         //commandManager.executeWithPrefix(server.getCommandSource(), "/execute in domain_expansion:domain_1 run tp @a 0 60 0");
         if (serverPlayer.getServerWorld().getRegistryKey() == World.OVERWORLD) {
-            teleportToDomain(
+            /*teleportToDomain(
                     serverPlayer.getServerWorld(),
                     server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY),
                     server.getPlayerManager().getPlayer(playerUuid),
@@ -57,11 +60,47 @@ public class TeleportToDomainPacket {
                     isOwner,
                     radius,
                     casterPos
-            );
+            );*/
+            if (isOwner) {
+                giveOwnerCompressor(serverPlayer, casterPos);
+            }
+
+            //todo use this
+            //serverPlayer.teleport(server.getWorld(getRandomDomain(serverPlayer.getRandom())), 0, 0, 0, 0.0f, 0.0f);
+
+            //todo Debug
+            serverPlayer.teleport(server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY), 0, 0, 0, serverPlayer.getBodyYaw(), serverPlayer.prevPitch);
+
         } else {
             serverPlayer.sendMessage(Text.literal("Domain Pillar is not in the Overworld").formatted(Formatting.RED), true);
         }
-        serverPlayer.teleport(server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY), 0, 60, 0, 0.0f, 0.0f);
+    }
+    public static RegistryKey<World> getRandomDomain(Random random) {
+        int worldIndex = random.nextBetween(0, domains.size() - 1);
+        return domains.get(worldIndex);
+    }
+    public static void giveOwnerCompressor(ServerPlayerEntity serverPlayer, BlockPos casterPos) {
+        ItemStack compressor = new ItemStack(DEModItems.DOMAIN_COMPRESSOR, 1);
+        NbtCompound nbtCompound = new NbtCompound();
+        nbtCompound.put(DomainCompressorItem.CASTER_POS_KEY, new NbtList());
+        NbtList posList = nbtCompound.getList(DomainCompressorItem.CASTER_POS_KEY, NbtElement.INT_TYPE);
+        for (int i = 0; i < 3; i++) {
+            NbtCompound posComponent = new NbtCompound();
+            switch (i) {
+                case 1:
+                    posComponent.putInt(DomainCompressorItem.CASTER_POS_KEY, casterPos.getX());
+                    posList.add(1, posComponent);
+                case 2:
+                    posComponent.putInt(DomainCompressorItem.CASTER_POS_KEY, casterPos.getY());
+                    posList.add(2, posComponent);
+                default :
+                    posComponent.putInt(DomainCompressorItem.CASTER_POS_KEY, casterPos.getZ());
+                    posList.add(0, posComponent);
+
+            }
+        }
+        compressor.writeNbt(nbtCompound);
+        serverPlayer.giveItemStack(compressor);
     }
     public static void teleportToDomain(
             ServerWorld origin,
@@ -127,27 +166,7 @@ public class TeleportToDomainPacket {
             destination.getWorldBorder().setSize(radius * 2);
 
             if (isOwner) {
-                ItemStack compressor = new ItemStack(DEModItems.DOMAIN_COMPRESSOR, 1);
-                NbtCompound nbtCompound = new NbtCompound();
-                nbtCompound.put(DomainCompressorItem.CASTER_POS_KEY, new NbtList());
-                NbtList posList = nbtCompound.getList(DomainCompressorItem.CASTER_POS_KEY, NbtElement.INT_TYPE);
-                for (int i = 0; i < 3; i++) {
-                    NbtCompound posComponent = new NbtCompound();
-                    switch (i) {
-                        case 1:
-                            posComponent.putInt(DomainCompressorItem.CASTER_POS_KEY, casterPos.getX());
-                            posList.add(1, posComponent);
-                        case 2:
-                            posComponent.putInt(DomainCompressorItem.CASTER_POS_KEY, casterPos.getY());
-                            posList.add(2, posComponent);
-                        default :
-                            posComponent.putInt(DomainCompressorItem.CASTER_POS_KEY, casterPos.getZ());
-                            posList.add(0, posComponent);
 
-                    }
-                }
-                compressor.writeNbt(nbtCompound);
-                serverPlayer.giveItemStack(compressor);
             }
         }
 

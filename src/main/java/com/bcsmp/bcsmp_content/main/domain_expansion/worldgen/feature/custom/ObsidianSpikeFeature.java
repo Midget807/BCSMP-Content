@@ -63,7 +63,36 @@ public class ObsidianSpikeFeature extends Feature<DefaultFeatureConfig> {
     private void generateSpike(SpikeRotation.Rotation rotation, SpikeSize.Size size, SpikeShape.Shape shape, BlockPos origin, StructureWorldAccess structureWorldAccess) {
         switch (shape) {
             case CURVE: {
+                switch (size) {
+                    case MEDIUM: {
+                        //break;
+                    }
+                    case LARGE: {
+                        //break;
+                    }
+                    default: case SMALL: {
+                        this.generateSmallWideBase(structureWorldAccess, origin);
+                        switch (rotation) {
+                            case EAST: {
 
+                                //break;
+                            }
+                            case SOUTH: {
+
+                                //break;
+                            }
+                            case WEST: {
+
+                                //break
+                            }
+                            default: case NORTH: {
+                                // TODO: 16/02/2025 this shit -> smalls only then later update can be for more sizes
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
                 //break;
             }
             case WIDE: {
@@ -97,7 +126,7 @@ public class ObsidianSpikeFeature extends Feature<DefaultFeatureConfig> {
                         break;
                     }
                 }
-                //break;
+                break;
             }
             default: case THIN: {
                 switch (size) {

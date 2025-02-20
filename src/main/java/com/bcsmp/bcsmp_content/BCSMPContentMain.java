@@ -2,6 +2,7 @@ package com.bcsmp.bcsmp_content;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlockEntities;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
+import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.entity.DEModEntities;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItemGroups;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
@@ -36,5 +37,6 @@ public class BCSMPContentMain implements ModInitializer {
 		DEModMessages.registerC2SPackets();
 		DEModFeatures.registerDomainExpansionFeatures();
 		DEModBiomeModifier.registerDomainExpansionBiomeModifier();
+		DEModEffects.registerDomainExpansionEffects();
 	}
 }
