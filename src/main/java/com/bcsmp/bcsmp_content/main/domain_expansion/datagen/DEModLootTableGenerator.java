@@ -11,6 +11,6 @@ public class DEModLootTableGenerator extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-        addDrop(DEModBlocks.DOMAIN_PILLAR);
+        addDrop(DEModBlocks.DOMAIN_PILLAR, this::doorDrops);
     }
 }

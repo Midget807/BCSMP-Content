@@ -1,5 +1,6 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
 
+import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -18,7 +19,7 @@ public class DEModModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        blockStateModelGenerator.registerSimpleState(DEModBlocks.DOMAIN_PILLAR);
+        blockStateModelGenerator.registerDoubleBlock(DEModBlocks.DOMAIN_PILLAR, BCSMPContentMain.domainExpansionId("block/domain_pillar_top"), BCSMPContentMain.domainExpansionId("block/domain_pillar_bottom"));
         blockStateModelGenerator.registerSimpleCubeAll(DEModBlocks.WITHERED_SOIL);
         blockStateModelGenerator.registerSimpleCubeAll(DEModBlocks.DOMAIN_OBSIDIAN);
 
@@ -30,5 +31,8 @@ public class DEModModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(DEModItems.DEBUGGER, Items.STICK, Models.GENERATED);
         itemModelGenerator.register(DEModItems.DOMAIN_EXPANDER, Models.GENERATED);
+        itemModelGenerator.register(DEModItems.DOMAIN_COMPRESSOR, Models.GENERATED);
+
+        itemModelGenerator.register(DEModBlocks.DOMAIN_PILLAR.asItem(), Models.GENERATED);
     }
 }

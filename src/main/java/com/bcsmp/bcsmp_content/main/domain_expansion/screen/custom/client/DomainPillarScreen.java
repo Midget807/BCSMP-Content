@@ -2,37 +2,29 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.client;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
-import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainCompressorItem;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainExpansionItem;
-import com.bcsmp.bcsmp_content.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.DomainPillarScreenHandler;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
@@ -48,11 +40,11 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
-        this.renderTeamSelector(context, mouseX, mouseY, delta);
+        this.renderTeleportButton(context, mouseX, mouseY, delta);
         this.drawMouseoverTooltip(context, mouseX, mouseY);
     }
 
-    private void renderTeamSelector(DrawContext context, int mouseX, int mouseY, float delta) {
+    private void renderTeleportButton(DrawContext context, int mouseX, int mouseY, float delta) {
         PublicButtonWidget buttonWidget = new PublicButtonWidget(40, 80, 120, 20, Text.literal("button"), button -> {
             this.client = MinecraftClient.getInstance();
             DomainPillarScreenHandler domainPillarScreenHandler = (DomainPillarScreenHandler) this.client.player.currentScreenHandler;
@@ -67,14 +59,16 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                     NbtList targetNbtList = expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE);
                     MinecraftServer server = this.client.getServer();
                     if (server != null) {
+                        ServerPlayerEntity serverOwnerPlayer = server.getPlayerManager().getPlayer(ownerPlayer);
+                        RegistryKey<World> domainKey = this.getRandomDomain(serverOwnerPlayer.getRandom());
+                        ServerWorld domain = server.getWorld(domainKey);
                         for (int i = 0; i < targetNbtList.size(); i++) {
                             NbtCompound nbtCompound = targetNbtList.getCompound(i);
                             ServerPlayerEntity serverPlayer = server.getPlayerManager().getPlayer(nbtCompound.getUuid(DomainExpansionItem.TARGETS_KEY));
                             if (serverPlayer != null) {
-                                serverPlayer.teleport(server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY), 0, 0, 0, 0.0f, 0.0f);
+                                serverPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
                             }
                         }
-                        ServerPlayerEntity serverOwnerPlayer = server.getPlayerManager().getPlayer(ownerPlayer);
                         if (serverOwnerPlayer != null) {
                             ItemStack compressor = new ItemStack(DEModItems.DOMAIN_COMPRESSOR);
                             NbtCompound compressorNbt = compressor.getOrCreateNbt();
@@ -82,13 +76,25 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             compressorNbt.putInt("Y", serverOwnerPlayer.getBlockY());
                             compressorNbt.putInt("Z", serverOwnerPlayer.getBlockZ());
                             serverOwnerPlayer.giveItemStack(compressor);
-                            serverOwnerPlayer.teleport(server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY), 0, 0, 0, 0.0f, 0.0f);
+                            serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
                         }
+                        
                     }
                 }
             }
         });
         this.addDrawableChild(buttonWidget);
+    }
+
+    private RegistryKey<World> getRandomDomain(Random random) { // TODO: 22/02/2025 make it check for empty domains
+        int index = random.nextBetween(0, 3);
+        /*return switch (index) {
+            case 1 -> DEModDimensions.DOMAIN_2_LEVEL_KEY;
+            case 2 -> DEModDimensions.DOMAIN_3_LEVEL_KEY;
+            case 3 -> DEModDimensions.DOMAIN_4_LEVEL_KEY;
+            default -> DEModDimensions.DOMAIN_1_LEVEL_KEY;
+        };*/
+        return DEModDimensions.DOMAIN_1_LEVEL_KEY;
     }
 
     @Override

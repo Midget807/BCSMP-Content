@@ -30,7 +30,8 @@ import org.jetbrains.annotations.Nullable;
 public class DomainPillarBlock extends BlockWithEntity implements BlockEntityProvider, Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
     public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
-    public VoxelShape SHAPE = Block.createCuboidShape(1, 0, 1, 15, 15, 15);
+    public VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(1, 0, 1, 15, 16, 15);
+    public VoxelShape TOP_SHAPE = Block.createCuboidShape(1, 0, 1, 15, 14, 15);
     public DomainPillarBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, Boolean.FALSE));
@@ -79,7 +80,9 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
+        return world.getBlockState(pos.up()).isOf(this) && world.getBlockState(pos.up()).get(HALF) == DoubleBlockHalf.UPPER
+                ? BOTTOM_SHAPE
+                : TOP_SHAPE;
     }
 
     @Override

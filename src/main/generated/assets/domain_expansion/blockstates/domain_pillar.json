@@ -1,7 +1,10 @@
 {
   "variants": {
-    "": {
-      "model": "domain_expansion:block/domain_pillar"
+    "half=lower": {
+      "model": "domain_expansion:block/domain_pillar_bottom"
+    },
+    "half=upper": {
+      "model": "domain_expansion:block/domain_pillar_top"
     }
   }
 }

@@ -1,6 +1,7 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.item.custom;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
+import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.advancement.criterion.Criteria;
@@ -77,7 +78,6 @@ public class DomainCompressorItem extends Item {
                                     if (this.shouldTick && player != null) {
                                         ServerTickEvents.START_SERVER_TICK.register(server1 -> {
                                             if (player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null && player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration() > 0) {
-                                                player.sendMessage(Text.literal("balls"));
                                                 if (player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration() == 1) {
                                                     player.teleport(overworld, x, y, z, player.getBodyYaw(), player.prevPitch);
                                                 }
@@ -85,6 +85,7 @@ public class DomainCompressorItem extends Item {
                                                 this.shouldTick = false;
                                             }
                                         });
+                                        user.setStackInHand(hand, ItemStack.EMPTY);
                                     }
                                 }
                             }
