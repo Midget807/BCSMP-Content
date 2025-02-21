@@ -11,7 +11,7 @@ import net.minecraft.registry.Registry;
 
 public class DEModItems {
     public static final Item DEBUGGER = registerItem("debugger", new DebuggerItem(new FabricItemSettings().maxCount(1).fireproof()));
-    public static final Item DOMAIN_EXPANDER = registerItem("domain_expander", new DomainExpansionItem(new FabricItemSettings().maxCount(1).fireproof()));
+    public static final Item DOMAIN_EXPANDER = registerItem("domain_expander", new DomainExpansionItem(new FabricItemSettings().maxCount(1).fireproof(), null));
     public static final Item DOMAIN_COMPRESSOR = registerItem("domain_compressor", new DomainCompressorItem(new FabricItemSettings().maxCount(1)));
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, BCSMPContentMain.domainExpansionId(name), item);

@@ -4,6 +4,7 @@ import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainExpansionItem;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.DomainPillarScreenHandler;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModStateSaverAndLoader;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,7 +22,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
@@ -60,16 +64,16 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                     MinecraftServer server = this.client.getServer();
                     if (server != null) {
                         ServerPlayerEntity serverOwnerPlayer = server.getPlayerManager().getPlayer(ownerPlayer);
-                        RegistryKey<World> domainKey = this.getRandomDomain(serverOwnerPlayer.getRandom());
-                        ServerWorld domain = server.getWorld(domainKey);
-                        for (int i = 0; i < targetNbtList.size(); i++) {
-                            NbtCompound nbtCompound = targetNbtList.getCompound(i);
-                            ServerPlayerEntity serverPlayer = server.getPlayerManager().getPlayer(nbtCompound.getUuid(DomainExpansionItem.TARGETS_KEY));
-                            if (serverPlayer != null) {
-                                serverPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
+                        RegistryKey<World> domainKey = serverOwnerPlayer != null ? this.getRandomDomain(serverOwnerPlayer.getRandom(), server) : World.OVERWORLD;
+                        if (domainKey != World.OVERWORLD) {
+                            ServerWorld domain = server.getWorld(domainKey);
+                            for (int i = 0; i < targetNbtList.size(); i++) {
+                                NbtCompound nbtCompound = targetNbtList.getCompound(i);
+                                ServerPlayerEntity serverPlayer = server.getPlayerManager().getPlayer(nbtCompound.getUuid(DomainExpansionItem.TARGETS_KEY));
+                                if (serverPlayer != null) {
+                                    serverPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
+                                }
                             }
-                        }
-                        if (serverOwnerPlayer != null) {
                             ItemStack compressor = new ItemStack(DEModItems.DOMAIN_COMPRESSOR);
                             NbtCompound compressorNbt = compressor.getOrCreateNbt();
                             compressorNbt.putInt("X", serverOwnerPlayer.getBlockX());
@@ -77,24 +81,35 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             compressorNbt.putInt("Z", serverOwnerPlayer.getBlockZ());
                             serverOwnerPlayer.giveItemStack(compressor);
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
+
+                            DEModStateSaverAndLoader.setDomainUnavailable(domainKey, server);
+                        } else {
+                            this.client.player.sendMessage(Text.literal("All domains are occupied").formatted(Formatting.RED), true);
                         }
-                        
                     }
+                } else {
+                    this.client.player.sendMessage(Text.literal("Domain Expander is missing players").formatted(Formatting.RED), true);
                 }
+            } else {
+                this.client.player.sendMessage(Text.literal("Insert Domain Expander").formatted(Formatting.RED), true);
             }
         });
         this.addDrawableChild(buttonWidget);
     }
 
-    private RegistryKey<World> getRandomDomain(Random random) { // TODO: 22/02/2025 make it check for empty domains
-        int index = random.nextBetween(0, 3);
-        /*return switch (index) {
-            case 1 -> DEModDimensions.DOMAIN_2_LEVEL_KEY;
-            case 2 -> DEModDimensions.DOMAIN_3_LEVEL_KEY;
-            case 3 -> DEModDimensions.DOMAIN_4_LEVEL_KEY;
-            default -> DEModDimensions.DOMAIN_1_LEVEL_KEY;
-        };*/
-        return DEModDimensions.DOMAIN_1_LEVEL_KEY;
+    private RegistryKey<World> getRandomDomain(Random random, MinecraftServer server) {
+        DefaultedList<RegistryKey<World>> domains = DEModStateSaverAndLoader.getAvailableDomains(server);
+        if (!domains.isEmpty()) {
+            int index = random.nextBetween(0, MathHelper.clamp(domains.size() - 1, 0, 3));
+            return switch (index) {
+                case 1 -> DEModDimensions.DOMAIN_2_LEVEL_KEY;
+                case 2 -> DEModDimensions.DOMAIN_3_LEVEL_KEY;
+                case 3 -> DEModDimensions.DOMAIN_4_LEVEL_KEY;
+                default -> DEModDimensions.DOMAIN_1_LEVEL_KEY;
+            };
+        } else {
+            return World.OVERWORLD;
+        }
     }
 
     @Override

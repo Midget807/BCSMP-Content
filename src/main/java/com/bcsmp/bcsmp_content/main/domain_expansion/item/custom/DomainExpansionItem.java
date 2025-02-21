@@ -26,15 +26,15 @@ public class DomainExpansionItem extends Item {
     public static final String OWNER_KEY = "Owner";
     public static final String TARGETS_KEY = "Targets";
     public static final String RADIUS_KEY = "Radius";
-    public static PlayerEntity owner;
+    public PlayerEntity owner;
     public UUID ownerUuid;
     public DefaultedList<PlayerEntity> targets = DefaultedList.of();
     public DefaultedList<UUID> targetUuids = DefaultedList.of();
     public float domainRadius = 10;
 
-    public DomainExpansionItem(Settings settings) {
+    public DomainExpansionItem(Settings settings, PlayerEntity owner) {
         super(settings);
-        owner = null;
+        this.owner = owner;
     }
 
 
