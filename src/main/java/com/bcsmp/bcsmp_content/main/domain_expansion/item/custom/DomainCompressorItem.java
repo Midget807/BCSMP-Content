@@ -4,6 +4,7 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.command.argument.PosArgument;
 import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.entity.Entity;
@@ -11,6 +12,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.*;
@@ -32,6 +34,7 @@ import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProperties;
 import net.minecraft.world.biome.source.BiomeAccess;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -54,29 +57,35 @@ public class DomainCompressorItem extends Item {
                 world.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
         ) {
             if (user.isSneaking() && handStack.getNbt() != null) {
-                NbtList nbtList = handStack.getNbt().getList(CASTER_POS_KEY, NbtElement.INT_TYPE);
-                BlockPos casterOriginPos = new BlockPos(nbtList.getInt(0), nbtList.getInt(1), nbtList.getInt(2));
-                List<? extends PlayerEntity> players = world.getPlayers();
-
-                if (!world.isClient) {
-                    MinecraftServer server = world.getServer();
-                    if (user instanceof ServerPlayerEntity && server != null) {
-                        ServerWorld overworld = server.getWorld(World.OVERWORLD);
-                        if (overworld != null) {
-                            for (PlayerEntity player : players) {
-                                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                                serverPlayer.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, 8 * 20, 0));
-                                this.shouldTick = true;
-                            }
-                            for (PlayerEntity player : players) {
-                                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
-                                if (this.shouldTick) {
-                                    ServerTickEvents.START_SERVER_TICK.register(server1 -> {
-                                        if ((serverPlayer.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null) && serverPlayer.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration() == 0) {
-                                            serverPlayer.teleport(overworld, casterOriginPos.getX(), casterOriginPos.getY(), casterOriginPos.getZ(), serverPlayer.getBodyYaw(), serverPlayer.prevPitch);
-                                            this.shouldTick = false;
-                                        }
-                                    });
+                if (!(handStack.getNbt().contains("X") && handStack.getNbt().contains("Y") && handStack.getNbt().contains("Z"))) {
+                    return TypedActionResult.pass(handStack);
+                } else {
+                    int x = handStack.getNbt().getInt("X");
+                    int y = handStack.getNbt().getInt("Y");
+                    int z = handStack.getNbt().getInt("Z");
+                    if (!world.isClient) {
+                        MinecraftServer server = user.getServer();
+                        if (user instanceof ServerPlayerEntity && server != null) {
+                            ServerWorld overworld = server.getWorld(World.OVERWORLD);
+                            if (overworld != null) {
+                                ServerWorld serverWorld = ((ServerPlayerEntity) user).getServerWorld();
+                                for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                                    player.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, 10 * 20, 0));
+                                    this.shouldTick = true;
+                                }
+                                for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                                    if (this.shouldTick && player != null) {
+                                        ServerTickEvents.START_SERVER_TICK.register(server1 -> {
+                                            if (player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null && player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration() > 0) {
+                                                player.sendMessage(Text.literal("balls"));
+                                                if (player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration() == 1) {
+                                                    player.teleport(overworld, x, y, z, player.getBodyYaw(), player.prevPitch);
+                                                }
+                                            } else {
+                                                this.shouldTick = false;
+                                            }
+                                        });
+                                    }
                                 }
                             }
                         }
@@ -140,5 +149,22 @@ public class DomainCompressorItem extends Item {
                 serverPlayer.networkHandler.sendPacket(new EntityStatusEffectS2CPacket(serverPlayer.getId(), statusEffectInstance));
             }
         }
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (stack.getNbt() != null) {
+            if (stack.getNbt().contains("X") && stack.getNbt().contains("Y") && stack.getNbt().contains("Z")) {
+                int x = stack.getNbt().getInt("X");
+                int y = stack.getNbt().getInt("Y");
+                int z = stack.getNbt().getInt("Z");
+                tooltip.add(Text.literal("Return position: " + x + " " + y + " " + z));
+            } else {
+                tooltip.add(Text.literal("Return position not available").formatted(Formatting.DARK_GRAY));
+            }
+        } else {
+            tooltip.add(Text.literal("Return position not available").formatted(Formatting.DARK_GRAY));
+        }
+        super.appendTooltip(stack, world, tooltip, context);
     }
 }

@@ -23,6 +23,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
     private int domainTpEffectTicks = -10;
+    private int domainTpEffectMaxDuration = 1;
+    private boolean shouldTick = false;
 
     @Shadow
     protected abstract void renderOverlay(DrawContext context, Identifier texture, float opacity);
@@ -47,16 +49,30 @@ public abstract class InGameHudMixin {
         }
         if (this.client.player != null) {
             if (this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null && this.client.player.hasStatusEffect(DEModEffects.DOMAIN_TP_EFFECT)) {
-                this.domainTpEffectTicks = this.domainTpEffectTicks < 0 ? 200 : this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration();
-                this.domainTpEffectTicks--;
-                this.renderOverlay(context, DEModOverlayIds.DOMAIN_TP_OVERLAY, getDomainTpPercent((float) (this.domainTpEffectTicks / 50), this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration()));
+                this.domainTpEffectMaxDuration = 200;
+                this.domainTpEffectTicks = this.domainTpEffectMaxDuration;
+                this.shouldTick = true;
+                if (shouldTick) {
+                    ClientTickEvents.START_CLIENT_TICK.register(client1 -> {
+                        this.domainTpEffectTicks--;
+                        if (this.domainTpEffectTicks < 0) {
+                            this.shouldTick = false;
+                        }
+                    });
+                    if (this.domainTpEffectTicks < 0) {
+                        this.shouldTick = false;
+                    }
+                }
+                this.renderOverlay(context, DEModOverlayIds.DOMAIN_TP_OVERLAY, getDomainTpPercent((float) (this.domainTpEffectTicks / 20), this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration()));
+            } else {
+                this.shouldTick = false;
             }
         }
     }
 
     @Unique
     private float getDomainTpPercent(float effectTicks, float effectDuration) {
-        return MathHelper.clamp(1 - (effectTicks / effectDuration), 0, 1);
+        return MathHelper.clamp((effectTicks / effectDuration), 0, 1);
     }
 
 }

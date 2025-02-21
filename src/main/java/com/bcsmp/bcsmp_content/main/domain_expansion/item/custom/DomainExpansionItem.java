@@ -47,7 +47,6 @@ public class DomainExpansionItem extends Item {
         }
         NbtList targetList = nbtCompound.getList(TARGETS_KEY, NbtElement.COMPOUND_TYPE);
         if (!world.isClient) {
-            player.sendMessage(Text.literal("balls").formatted(Formatting.BOLD).formatted(Formatting.AQUA), true);
             if (!player.isSneaking()) {
                 //Info Check
                 targets = this.getPlayersInRange(world, player);

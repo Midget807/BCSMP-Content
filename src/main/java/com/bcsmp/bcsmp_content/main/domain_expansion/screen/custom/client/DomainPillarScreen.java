@@ -2,9 +2,11 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.client;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
+import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainCompressorItem;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainExpansionItem;
 import com.bcsmp.bcsmp_content.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.DomainPillarScreenHandler;
+import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -22,6 +24,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -33,7 +37,6 @@ import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler> implements ScreenHandlerProvider<DomainPillarScreenHandler> {
-    public static final ButtonWidget.NarrationSupplier DEFAULT_NARRATION_SUPPLIER = textSupplier -> (MutableText)textSupplier.get();
     private static final Identifier TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_window.png");
     public DomainPillarScreen(DomainPillarScreenHandler handler, PlayerInventory playerInventory, Text title) {
         super(handler, playerInventory, title);
@@ -52,35 +55,34 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
     private void renderTeamSelector(DrawContext context, int mouseX, int mouseY, float delta) {
         PublicButtonWidget buttonWidget = new PublicButtonWidget(40, 80, 120, 20, Text.literal("button"), button -> {
             this.client = MinecraftClient.getInstance();
-            PacketByteBuf buf = PacketByteBufs.create();
             DomainPillarScreenHandler domainPillarScreenHandler = (DomainPillarScreenHandler) this.client.player.currentScreenHandler;
-            if (domainPillarScreenHandler.getInventory().getStack(0).getItem() == DEModItems.DOMAIN_EXPANDER) {
+            if (domainPillarScreenHandler.getInventory().getStack(0).getItem() == DEModItems.DOMAIN_EXPANDER && this.client.world != null) {
                 ItemStack expander = domainPillarScreenHandler.getInventory().getStack(0);
                 if (expander.getNbt() != null &&
                         expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY) != null &&
                         expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE) != null &&
                         expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY) >= 10
                 ) {
-                    buf.writeBlockPos(this.client.player.getBlockPos());
-                    buf.writeFloat(expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY));
-
-                    UUID ownerUuid = expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY);
-                    DefaultedList<UUID> targetUuids = DefaultedList.of();
-                    NbtList nbtTargetList = expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE);
-                    for (int i = 0; i < nbtTargetList.size() && !nbtTargetList.isEmpty(); i++) {
-                        NbtCompound selectedTargetCompound = nbtTargetList.getCompound(i);
-                        targetUuids.add(i, selectedTargetCompound.getUuid(DomainExpansionItem.TARGETS_KEY));
-                    }
-
-                    if (expander.getNbt().get(DomainExpansionItem.OWNER_KEY) != null) {
-                        buf.writeBoolean(true);
-                        buf.writeUuid(ownerUuid);
-                        ClientPlayNetworking.send(DEModMessages.TELEPORT_DOMAIN, buf);
-                    } else if (expander.getNbt().get(DomainExpansionItem.TARGETS_KEY) != null) {
-                        buf.writeBoolean(false);
-                        for (UUID target : targetUuids) {
-                            buf.writeUuid(target);
-                            ClientPlayNetworking.send(DEModMessages.TELEPORT_DOMAIN, buf);
+                    UUID ownerPlayer = expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY);
+                    NbtList targetNbtList = expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE);
+                    MinecraftServer server = this.client.getServer();
+                    if (server != null) {
+                        for (int i = 0; i < targetNbtList.size(); i++) {
+                            NbtCompound nbtCompound = targetNbtList.getCompound(i);
+                            ServerPlayerEntity serverPlayer = server.getPlayerManager().getPlayer(nbtCompound.getUuid(DomainExpansionItem.TARGETS_KEY));
+                            if (serverPlayer != null) {
+                                serverPlayer.teleport(server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY), 0, 0, 0, 0.0f, 0.0f);
+                            }
+                        }
+                        ServerPlayerEntity serverOwnerPlayer = server.getPlayerManager().getPlayer(ownerPlayer);
+                        if (serverOwnerPlayer != null) {
+                            ItemStack compressor = new ItemStack(DEModItems.DOMAIN_COMPRESSOR);
+                            NbtCompound compressorNbt = compressor.getOrCreateNbt();
+                            compressorNbt.putInt("X", serverOwnerPlayer.getBlockX());
+                            compressorNbt.putInt("Y", serverOwnerPlayer.getBlockY());
+                            compressorNbt.putInt("Z", serverOwnerPlayer.getBlockZ());
+                            serverOwnerPlayer.giveItemStack(compressor);
+                            serverOwnerPlayer.teleport(server.getWorld(DEModDimensions.DOMAIN_1_LEVEL_KEY), 0, 0, 0, 0.0f, 0.0f);
                         }
                     }
                 }
