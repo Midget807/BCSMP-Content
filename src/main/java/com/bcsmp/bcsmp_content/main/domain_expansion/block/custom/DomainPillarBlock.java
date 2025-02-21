@@ -3,15 +3,19 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.block.custom;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.custom.entity.DomainPillarBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -20,14 +24,13 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.*;
 import org.jetbrains.annotations.Nullable;
 
 public class DomainPillarBlock extends BlockWithEntity implements BlockEntityProvider, Waterloggable {
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
-    public VoxelShape SHAPE = Block.createCuboidShape(1, 0, 1, 15, 28, 15);
+    public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
+    public VoxelShape SHAPE = Block.createCuboidShape(1, 0, 1, 15, 15, 15);
     public DomainPillarBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, Boolean.FALSE));
@@ -37,7 +40,27 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
     @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-        return this.getDefaultState().with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+        BlockPos blockPos = ctx.getBlockPos();
+        World world = ctx.getWorld();
+        if (blockPos.getY() < world.getTopY() - 1) {
+            return this.getDefaultState()
+                    .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER)
+                    .with(HALF, DoubleBlockHalf.LOWER);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
+        world.setBlockState(pos.up(), state.with(HALF, DoubleBlockHalf.UPPER), Block.NOTIFY_ALL);
+    }
+
+    @Override
+    public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
+        BlockPos blockPos = pos.down();
+        BlockState blockState = world.getBlockState(blockPos);
+        return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(world, blockPos, Direction.UP) : blockState.isOf(this);
     }
 
     @Override
@@ -52,6 +75,7 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
             return ActionResult.CONSUME;
         }
     }
+
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -76,7 +100,7 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
 
     @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED);
+        builder.add(WATERLOGGED, HALF);
     }
 
     @Override
@@ -86,10 +110,38 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
 
     @Override
     public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos) {
-        if (state.get(WATERLOGGED)) {
-            world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+        DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+        if (direction.getAxis() != Direction.Axis.Y || doubleBlockHalf == DoubleBlockHalf.LOWER != (direction == Direction.UP)) {
+            return doubleBlockHalf == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canPlaceAt(world, pos)
+                    ? Blocks.AIR.getDefaultState()
+                    : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+        } else {
+            if (neighborState.isOf(this) && neighborState.get(HALF) != doubleBlockHalf) {
+                if (state.get(WATERLOGGED)) {
+                    world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+                }
+                return state.with(WATERLOGGED, state.get(WATERLOGGED));
+            } else {
+                return Blocks.AIR.getDefaultState();
+            }
         }
-        return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+    }
+
+    @Override
+    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!world.isClient && player.isCreative()) {
+            DoubleBlockHalf doubleBlockHalf = state.get(HALF);
+            if (doubleBlockHalf == DoubleBlockHalf.UPPER) {
+                BlockPos blockPos = pos.down();
+                BlockState blockState = world.getBlockState(blockPos);
+                if (blockState.isOf(state.getBlock()) && blockState.get(HALF) == DoubleBlockHalf.LOWER) {
+                    BlockState blockState2 = blockState.getFluidState().isOf(Fluids.WATER) ? Blocks.WATER.getDefaultState() : Blocks.AIR.getDefaultState();
+                    world.setBlockState(blockPos, blockState2, Block.NOTIFY_ALL | Block.SKIP_DROPS);
+                    world.syncWorldEvent(player, WorldEvents.BLOCK_BROKEN, blockPos, Block.getRawIdFromState(blockState));
+                }
+            }
+        }
+        super.onBreak(world, pos, state, player);
     }
 
     @Override
