@@ -1,5 +1,6 @@
 package com.bcsmp.bcsmp_content.mixin.client;
 
+import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModOverlayIds;
 import com.bcsmp.bcsmp_content.mixin.EntityMixin;
@@ -49,7 +50,7 @@ public abstract class InGameHudMixin {
         }
         if (this.client.player != null) {
             if (this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null && this.client.player.hasStatusEffect(DEModEffects.DOMAIN_TP_EFFECT)) {
-                this.domainTpEffectMaxDuration = 200;
+                this.domainTpEffectMaxDuration = DEModMidnightConfig.domainTpEffectFade;
                 this.domainTpEffectTicks = this.domainTpEffectMaxDuration;
                 this.shouldTick = true;
                 if (shouldTick) {

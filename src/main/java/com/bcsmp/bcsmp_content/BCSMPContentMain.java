@@ -2,6 +2,8 @@ package com.bcsmp.bcsmp_content;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlockEntities;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
+import com.bcsmp.bcsmp_content.main.domain_expansion.command.DEModCommands;
+import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.entity.DEModEntities;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItemGroups;
@@ -10,6 +12,7 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.DEModScreenHandlers;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.surface.DEModBiomeModifier;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.DEModFeatures;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -28,6 +31,8 @@ public class BCSMPContentMain implements ModInitializer {
 		LOGGER.info("yeh hello");
 
 		//Domain Expansion Mod
+		MidnightConfig.init(DE_MOD_ID, DEModMidnightConfig.class);
+
 		DEModItems.registerDomainExpansionItems();
 		DEModItemGroups.registerDomainExpansionItemGroups();
 		DEModBlocks.registerDomainExpansionBlocks();
@@ -38,5 +43,6 @@ public class BCSMPContentMain implements ModInitializer {
 		DEModFeatures.registerDomainExpansionFeatures();
 		DEModBiomeModifier.registerDomainExpansionBiomeModifier();
 		DEModEffects.registerDomainExpansionEffects();
+		DEModCommands.registerDomainExpansionCommands();
 	}
 }

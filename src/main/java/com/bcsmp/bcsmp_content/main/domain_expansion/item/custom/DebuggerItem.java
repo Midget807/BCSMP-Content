@@ -1,8 +1,12 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.item.custom;
 
+import com.bcsmp.bcsmp_content.main.domain_expansion.command.DEModCommands;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModStateSaverAndLoader;
+import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
@@ -24,8 +28,12 @@ public class DebuggerItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
         if (!world.isClient) {
-            player.sendMessage(Text.literal("You are within range of ").formatted(Formatting.RED).append(player.getName() + "'s").formatted(Formatting.BOLD).formatted(Formatting.RED).append(Text.literal(" domain expansion").formatted(Formatting.RED)), true);
-
+            MinecraftServer server = player.getServer();
+            if (server != null) {
+                if (player.isSneaking()) {
+                } else {
+                }
+            }
         }
         return TypedActionResult.pass(handStack);
     }

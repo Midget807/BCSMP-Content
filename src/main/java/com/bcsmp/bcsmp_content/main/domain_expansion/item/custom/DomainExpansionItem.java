@@ -63,6 +63,7 @@ public class DomainExpansionItem extends Item {
                     }
                 }
                 targets = DefaultedList.of();
+                targetUuids = DefaultedList.of();
                 if (owner != null) {
                     if (ownerUuid != null) {
                         ownerUuid = null;

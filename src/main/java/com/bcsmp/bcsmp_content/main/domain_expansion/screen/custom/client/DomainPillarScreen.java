@@ -49,7 +49,7 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
     }
 
     private void renderTeleportButton(DrawContext context, int mouseX, int mouseY, float delta) {
-        PublicButtonWidget buttonWidget = new PublicButtonWidget(40, 80, 120, 20, Text.literal("button"), button -> {
+        PublicButtonWidget buttonWidget = new PublicButtonWidget(40, 80, 120, 20, Text.literal("Expand Domain"), button -> {
             this.client = MinecraftClient.getInstance();
             DomainPillarScreenHandler domainPillarScreenHandler = (DomainPillarScreenHandler) this.client.player.currentScreenHandler;
             if (domainPillarScreenHandler.getInventory().getStack(0).getItem() == DEModItems.DOMAIN_EXPANDER && this.client.world != null) {
@@ -101,12 +101,7 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
         DefaultedList<RegistryKey<World>> domains = DEModStateSaverAndLoader.getAvailableDomains(server);
         if (!domains.isEmpty()) {
             int index = random.nextBetween(0, MathHelper.clamp(domains.size() - 1, 0, 3));
-            return switch (index) {
-                case 1 -> DEModDimensions.DOMAIN_2_LEVEL_KEY;
-                case 2 -> DEModDimensions.DOMAIN_3_LEVEL_KEY;
-                case 3 -> DEModDimensions.DOMAIN_4_LEVEL_KEY;
-                default -> DEModDimensions.DOMAIN_1_LEVEL_KEY;
-            };
+            return domains.get(index);
         } else {
             return World.OVERWORLD;
         }

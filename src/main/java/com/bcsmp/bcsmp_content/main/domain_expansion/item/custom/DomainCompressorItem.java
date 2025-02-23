@@ -1,7 +1,9 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.item.custom;
 
+import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModStateSaverAndLoader;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.advancement.criterion.Criteria;
@@ -71,7 +73,7 @@ public class DomainCompressorItem extends Item {
                             if (overworld != null) {
                                 ServerWorld serverWorld = ((ServerPlayerEntity) user).getServerWorld();
                                 for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-                                    player.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, 10 * 20, 0));
+                                    player.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, DEModMidnightConfig.domainTpEffectFade, 0));
                                     this.shouldTick = true;
                                 }
                                 for (ServerPlayerEntity player : serverWorld.getPlayers()) {
@@ -88,6 +90,7 @@ public class DomainCompressorItem extends Item {
                                         user.setStackInHand(hand, ItemStack.EMPTY);
                                     }
                                 }
+                                DEModStateSaverAndLoader.setDomainAvailable(serverWorld.getRegistryKey(), server);
                             }
                         }
                     }

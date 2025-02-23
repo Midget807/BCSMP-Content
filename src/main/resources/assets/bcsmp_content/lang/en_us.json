@@ -3,5 +3,12 @@
 
     "container.bcsmps2.domain_expansion.domain_pillar_title": "Domain Pillar",
 
-    "item.domain_expansion.domain_expander": "Domain Expander"
+    "block.domain_expansion.domain_pillar": "Domain Pillar",
+
+    "item.domain_expansion.domain_expander": "Domain Expander",
+    "item.domain_expansion.domain_compressor": "Domain Compressor",
+
+    "domain_expansion.midnightconfig.title": "Domain Expansion",
+    "domain_expansion.midnightconfig.domainTpEffectText": "Domain Teleport Effect",
+    "domain_expansion.midnightconfig.domainTpEffectFade": "Fade Duration"
 }

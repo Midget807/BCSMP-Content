@@ -49,6 +49,18 @@ public class DEModStateSaverAndLoader extends PersistentState {
         state.markDirty();
         return state;
     }
+    public static void setDomainAvailable(RegistryKey<World> domainKey, MinecraftServer server) {
+        DEModStateSaverAndLoader state = getServerState(server);
+        if (domainKey == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
+            state.domain1Available = true;
+        } else if (domainKey == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
+            state.domain2Available = true;
+        } else if (domainKey == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
+            state.domain3Available = true;
+        } else if (domainKey == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
+            state.domain4Available = true;
+        }
+    }
     public static void setDomainUnavailable(RegistryKey<World> domainKey, MinecraftServer server) {
         DEModStateSaverAndLoader state = getServerState(server);
         if (domainKey == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
@@ -77,5 +89,18 @@ public class DEModStateSaverAndLoader extends PersistentState {
             domains.add(DEModDimensions.DOMAIN_4_LEVEL_KEY);
         }
         return domains;
+    }
+    public Boolean queryAvailability(RegistryKey<World> domainKey) {
+        if (domainKey == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
+            return this.domain1Available;
+        } else if (domainKey == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
+            return this.domain2Available;
+        } else if (domainKey == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
+            return this.domain3Available;
+        } else if (domainKey == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
+            return this.domain4Available;
+        } else {
+            return null;
+        }
     }
 }

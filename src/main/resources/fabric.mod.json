@@ -23,11 +23,9 @@
 		],
 		"fabric-datagen": [
 			"com.bcsmp.bcsmp_content.BCSMPContentDataGenerator"
-		]
-	},
-	"custom": {
-		"cardinal-components": [
-			"domain_expansion:domain_usage"
+		],
+		"modmenu": [
+			"com.bcsmp.bcsmp_content.main.domain_expansion.config.ModMenuInit"
 		]
 	},
 	"mixins": [
