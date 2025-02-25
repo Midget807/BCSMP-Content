@@ -14,7 +14,15 @@ import static net.minecraft.server.command.CommandManager.*;
 
 public class DEModCommands {
     public static void registerCommands() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("domain")
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            dispatcher.register(literal("domain")
+                    .requires(source -> source.hasPermissionLevel(2))
+                    .then(DomainSetCommand.register(dispatcher))
+                    .then(DomainQueryCommand.register(dispatcher))
+                    .then(DomainBorderCommand.register(dispatcher))
+            );
+        });
+        /*CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("domain")
                 .requires(source -> source.hasPermissionLevel(2))
                 .then(literal("set")
                         .then(literal("available")
@@ -104,10 +112,10 @@ public class DEModCommands {
                                 .executes(context -> getAvailability(context.getSource(), DEModDimensions.DOMAIN_4_LEVEL_KEY))
                         )
                 )
-        ));
+        ));*/
     }
 
-    public static int getAvailability(ServerCommandSource source, RegistryKey<World> domainKey) {
+    /*public static int getAvailability(ServerCommandSource source, RegistryKey<World> domainKey) {
         DEModStateSaverAndLoader state = DEModStateSaverAndLoader.getServerState(source.getServer());
         if (state.queryAvailability(domainKey) != null) {
             for (ServerWorld ignored : source.getServer().getWorlds()) {
@@ -143,8 +151,8 @@ public class DEModCommands {
             }
         }
         return 1;
-    }
-
+    }*/
+    /*
     public static int sendSetAvailableFeedback(ServerCommandSource source, RegistryKey<World> domainKey, boolean isAvailable) {
         if (domainKey == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
             if (isAvailable) {
@@ -186,7 +194,7 @@ public class DEModCommands {
                 }
             }
         }
-    } // TODO: 23/02/2025 make work
+    }*/
 
     public static void registerDomainExpansionCommands() {
         BCSMPContentMain.LOGGER.info("Domain Expansion -> Registering Mod Domains");

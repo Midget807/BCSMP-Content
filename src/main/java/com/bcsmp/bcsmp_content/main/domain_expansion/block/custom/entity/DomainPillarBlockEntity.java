@@ -139,7 +139,7 @@ public class DomainPillarBlockEntity extends LockableContainerBlockEntity implem
     @Override
     protected Text getContainerName() {
         return this.owner != null ?
-                Text.literal(this.owner.getName().getString() + "'s").append(Text.translatable("container.bcsmps2.domain_expansion.domain_pillar_title")) :
+                Text.literal(this.owner.getName().getString() + "'s").append(Text.translatable("container.domain_expansion.domain_pillar_title")) :
                 Text.translatable("container.bcsmps2.domain_expansion.domain_pillar_title");
     }
 

@@ -1,7 +1,7 @@
 {
     "item.domain_expansion.debugger": "Debugger",
 
-    "container.bcsmps2.domain_expansion.domain_pillar_title": "Domain Pillar",
+    "container.domain_expansion.domain_pillar_title": "Domain Pillar",
 
     "block.domain_expansion.domain_pillar": "Domain Pillar",
 
@@ -11,4 +11,6 @@
     "domain_expansion.midnightconfig.title": "Domain Expansion",
     "domain_expansion.midnightconfig.domainTpEffectText": "Domain Teleport Effect",
     "domain_expansion.midnightconfig.domainTpEffectFade": "Fade Duration"
+
+
 }

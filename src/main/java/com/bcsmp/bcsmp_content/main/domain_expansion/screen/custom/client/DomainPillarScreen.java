@@ -59,6 +59,7 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                         expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE) != null &&
                         expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY) >= 10
                 ) {
+                    float radius = expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY);
                     UUID ownerPlayer = expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY);
                     NbtList targetNbtList = expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE);
                     MinecraftServer server = this.client.getServer();
@@ -82,6 +83,12 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             serverOwnerPlayer.giveItemStack(compressor);
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
 
+                            domain.getWorldBorder().setCenter(0.0, 0.0);
+                            if (radius >= 10) {
+                                domain.getWorldBorder().setMaxRadius((int) radius);
+                            } else {
+                                domain.getWorldBorder().setMaxRadius(10);
+                            }
                             DEModStateSaverAndLoader.setDomainUnavailable(domainKey, server);
                         } else {
                             this.client.player.sendMessage(Text.literal("All domains are occupied").formatted(Formatting.RED), true);
