@@ -5,10 +5,13 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.world.World;
 import net.minecraft.world.border.WorldBorder;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +20,7 @@ import java.util.Locale;
 import static net.minecraft.server.command.CommandManager.*;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.*;
 import static com.mojang.brigadier.arguments.DoubleArgumentType.*;
+import static net.minecraft.command.argument.Vec2ArgumentType.*;
 
 public class DomainBorderCommand {
     private static final SimpleCommandExceptionType CENTER_FAILED_EXCEPTION = new SimpleCommandExceptionType(
@@ -204,7 +208,7 @@ public class DomainBorderCommand {
                                                         || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
                                                         || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
                                                 ) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius"), 0L);
+                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
                                                 }
                                             }
                                             return 1;
@@ -220,7 +224,7 @@ public class DomainBorderCommand {
                                                             return executeSet(
                                                                     context.getSource(),
                                                                     serverWorld,
-                                                                    getDouble(context, "radius"),
+                                                                    getDouble(context, "radius") * 2,
                                                                     serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
                                                             );
                                                         }
@@ -235,7 +239,7 @@ public class DomainBorderCommand {
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius"), 0L);
+                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
                                                 }
                                             }
                                             return 1;
@@ -247,7 +251,7 @@ public class DomainBorderCommand {
                                                             return executeSet(
                                                                     context.getSource(),
                                                                     serverWorld,
-                                                                    getDouble(context, "radius"),
+                                                                    getDouble(context, "radius") * 2,
                                                                     serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
                                                             );
                                                         }
@@ -262,7 +266,7 @@ public class DomainBorderCommand {
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius"), 0L);
+                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
                                                 }
                                             }
                                             return 1;
@@ -274,7 +278,7 @@ public class DomainBorderCommand {
                                                             return executeSet(
                                                                     context.getSource(),
                                                                     serverWorld,
-                                                                    getDouble(context, "radius"),
+                                                                    getDouble(context, "radius") * 2,
                                                                     serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
                                                             );
                                                         }
@@ -289,7 +293,7 @@ public class DomainBorderCommand {
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius"), 0L);
+                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
                                                 }
                                             }
                                             return 1;
@@ -301,7 +305,7 @@ public class DomainBorderCommand {
                                                             return executeSet(
                                                                     context.getSource(),
                                                                     serverWorld,
-                                                                    getDouble(context, "radius"),
+                                                                    getDouble(context, "radius") * 2,
                                                                     serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
                                                             );
                                                         }
@@ -316,7 +320,7 @@ public class DomainBorderCommand {
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius"), 0L);
+                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
                                                 }
                                             }
                                             return 1;
@@ -328,7 +332,7 @@ public class DomainBorderCommand {
                                                             return executeSet(
                                                                     context.getSource(),
                                                                     serverWorld,
-                                                                    getDouble(context, "radius"),
+                                                                    getDouble(context, "radius") * 2,
                                                                     serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
                                                             );
                                                         }
@@ -339,8 +343,52 @@ public class DomainBorderCommand {
                                 )
                         )
 
+                )
+                .then(literal("center")
+                        .then(literal("all")
+                                .then(argument("pos", vec2())
+                                        .executes(context -> {
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_1_LEVEL_KEY);
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_2_LEVEL_KEY);
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_3_LEVEL_KEY);
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_4_LEVEL_KEY);
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(literal("dark_plains")
+                                .then(argument("pos", vec2())
+                                        .executes(context -> {
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_1_LEVEL_KEY);
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(literal("barrens")
+                                .then(argument("pos", vec2())
+                                        .executes(context -> {
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_2_LEVEL_KEY);
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(literal("tundra")
+                                .then(argument("pos", vec2())
+                                        .executes(context -> {
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_3_LEVEL_KEY);
+                                            return 1;
+                                        })
+                                )
+                        )
+                        .then(literal("crystal_cave")
+                                .then(argument("pos", vec2())
+                                        .executes(context -> {
+                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_4_LEVEL_KEY);
+                                            return 1;
+                                        })
+                                )
+                        )
                 );
-        // TODO: 25/02/2025 centre shit 
     }
 
     private static int executeSet(ServerCommandSource source, ServerWorld world, double distance, long time) throws CommandSyntaxException {
@@ -369,6 +417,15 @@ public class DomainBorderCommand {
                 source.sendFeedback(() -> Text.translatable("commands.worldborder.set.immediate", String.format(Locale.ROOT, "%.1f", distance)), true);
             }
             return (int) (distance - initSize);
+        }
+    }
+
+    private static void executeCenter(ServerCommandSource source, Vec2f pos, RegistryKey<World> domainKey) {
+        for (ServerWorld serverWorld : source.getServer().getWorlds()) {
+            if (serverWorld.getRegistryKey() == domainKey) {
+                WorldBorder worldBorder = serverWorld.getWorldBorder();
+                worldBorder.setCenter(pos.x, pos.y);
+            }
         }
     }
 }

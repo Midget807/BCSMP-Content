@@ -28,6 +28,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
+import net.minecraft.world.border.WorldBorder;
 
 import java.util.UUID;
 
@@ -83,11 +84,12 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             serverOwnerPlayer.giveItemStack(compressor);
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
 
-                            domain.getWorldBorder().setCenter(0.0, 0.0);
-                            if (radius >= 10) {
-                                domain.getWorldBorder().setMaxRadius((int) radius);
-                            } else {
-                                domain.getWorldBorder().setMaxRadius(10);
+                            if (domain != null) {
+                                WorldBorder worldBorder = domain.getWorldBorder();
+                                worldBorder.setCenter(0.0, 0.0);
+                                if (radius >= 10) {
+                                    worldBorder.setSize(radius * 2);
+                                }
                             }
                             DEModStateSaverAndLoader.setDomainUnavailable(domainKey, server);
                         } else {
