@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.mixin;
+package com.bcsmp.bcsmp_content.mixin.domain_expansion;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
@@ -35,7 +35,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             ) {
                 this.dead = false;
                 this.setHealth(20.0f);
-                this.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_DEATH_EFFECT, 5 * 20, 0));
+                this.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_DEATH_EFFECT, 5 * 20, 0, false, false));
                 MinecraftClient client = MinecraftClient.getInstance();
                 client.particleManager.addEmitter(this, ParticleTypes.TOTEM_OF_UNDYING, 30);
                 List<LivingEntity> entities = this.getWorld().getEntitiesByClass(LivingEntity.class, this.getBoundingBox().expand(7, 7, 7), EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR);

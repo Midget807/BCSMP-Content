@@ -1,11 +1,10 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.command;
 
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModStateSaverAndLoader;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DomainAvailabilityState;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.registry.RegistryKey;
-import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -121,7 +120,7 @@ public class DomainSetCommand {
     }
 
     public static void executeSetDomainAvailability(ServerCommandSource source, RegistryKey<World> domainKey, boolean shouldBeAvailable) {
-        DEModStateSaverAndLoader state = DEModStateSaverAndLoader.getServerState(source.getServer());
+        DomainAvailabilityState state = DomainAvailabilityState.getServerState(source.getServer());
         for (ServerWorld serverWorld : source.getServer().getWorlds()) {
             if (serverWorld.getRegistryKey() == domainKey) {
                 if (shouldBeAvailable) {

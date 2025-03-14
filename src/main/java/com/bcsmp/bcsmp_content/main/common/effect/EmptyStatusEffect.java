@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.effect.custom;
+package com.bcsmp.bcsmp_content.main.common.effect;
 
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;

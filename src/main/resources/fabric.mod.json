@@ -31,6 +31,14 @@
 	"mixins": [
 		"bcsmp_content.mixins.json"
 	],
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/world/class_1941": [
+				"com/bcsmp/bcsmp_content/main.domain_expansion/worldgen/border/DomainCollision"
+			]
+		}
+	},
+	"accessWidener": "bcsmp_content.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.16.10",
 		"minecraft": "~1.20.1",

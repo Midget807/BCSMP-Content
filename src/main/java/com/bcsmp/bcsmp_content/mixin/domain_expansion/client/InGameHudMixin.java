@@ -1,17 +1,13 @@
-package com.bcsmp.bcsmp_content.mixin.client;
+package com.bcsmp.bcsmp_content.mixin.domain_expansion.client;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModOverlayIds;
-import com.bcsmp.bcsmp_content.mixin.EntityMixin;
-import com.bcsmp.bcsmp_content.mixin.PlayerEntityMixin;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;

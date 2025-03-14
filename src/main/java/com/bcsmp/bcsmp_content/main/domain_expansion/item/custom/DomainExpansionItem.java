@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class DomainExpansionItem extends Item {
+public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip 
     public static final String OWNER_KEY = "Owner";
     public static final String TARGETS_KEY = "Targets";
     public static final String RADIUS_KEY = "Radius";

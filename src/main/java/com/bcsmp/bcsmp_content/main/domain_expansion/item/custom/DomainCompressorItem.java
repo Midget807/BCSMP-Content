@@ -2,24 +2,17 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.item.custom;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
-import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModStateSaverAndLoader;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DomainAvailabilityState;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.command.argument.PosArgument;
-import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.network.packet.s2c.play.*;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerManager;
@@ -30,7 +23,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.TeleportTarget;
@@ -39,9 +31,7 @@ import net.minecraft.world.WorldProperties;
 import net.minecraft.world.biome.source.BiomeAccess;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 public class DomainCompressorItem extends Item {
     public static final String CASTER_POS_KEY = "CasterOriginPos";
@@ -73,7 +63,7 @@ public class DomainCompressorItem extends Item {
                             if (overworld != null) {
                                 ServerWorld serverWorld = ((ServerPlayerEntity) user).getServerWorld();
                                 for (ServerPlayerEntity player : serverWorld.getPlayers()) {
-                                    player.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, DEModMidnightConfig.domainTpEffectFade, 0));
+                                    player.addStatusEffect(new StatusEffectInstance(DEModEffects.DOMAIN_TP_EFFECT, DEModMidnightConfig.domainTpEffectFade, 0, false, false));
                                     this.shouldTick = true;
                                 }
                                 for (ServerPlayerEntity player : serverWorld.getPlayers()) {
@@ -90,7 +80,7 @@ public class DomainCompressorItem extends Item {
                                         user.setStackInHand(hand, ItemStack.EMPTY);
                                     }
                                 }
-                                DEModStateSaverAndLoader.setDomainAvailable(serverWorld.getRegistryKey(), server);
+                                DomainAvailabilityState.setDomainAvailable(serverWorld.getRegistryKey(), server);
                             }
                         }
                     }

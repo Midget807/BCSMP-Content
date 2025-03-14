@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.mixin;
+package com.bcsmp.bcsmp_content.mixin.domain_expansion;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.minecraft.entity.Entity;

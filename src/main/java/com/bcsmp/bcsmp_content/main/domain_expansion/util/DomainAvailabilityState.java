@@ -10,7 +10,7 @@ import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
 import net.minecraft.world.World;
 
-public class DEModStateSaverAndLoader extends PersistentState {
+public class DomainAvailabilityState extends PersistentState {
     public static final String DOMAIN_1_AVAILABLE_KEY = "Domain1Available";
     public static final String DOMAIN_2_AVAILABLE_KEY = "Domain2Available";
     public static final String DOMAIN_3_AVAILABLE_KEY = "Domain3Available";
@@ -27,30 +27,30 @@ public class DEModStateSaverAndLoader extends PersistentState {
         nbt.putBoolean(DOMAIN_4_AVAILABLE_KEY, domain4Available);
         return nbt;
     }
-    public static DEModStateSaverAndLoader createFromNbt(NbtCompound nbt) {
-        DEModStateSaverAndLoader state = new DEModStateSaverAndLoader();
+    public static DomainAvailabilityState createFromNbt(NbtCompound nbt) {
+        DomainAvailabilityState state = new DomainAvailabilityState();
         state.domain1Available = nbt.getBoolean(DOMAIN_1_AVAILABLE_KEY);
         state.domain2Available = nbt.getBoolean(DOMAIN_2_AVAILABLE_KEY);
         state.domain3Available = nbt.getBoolean(DOMAIN_3_AVAILABLE_KEY);
         state.domain4Available = nbt.getBoolean(DOMAIN_4_AVAILABLE_KEY);
         return state;
     }
-    public static DEModStateSaverAndLoader createNew() {
-        DEModStateSaverAndLoader state = new DEModStateSaverAndLoader();
+    public static DomainAvailabilityState createNew() {
+        DomainAvailabilityState state = new DomainAvailabilityState();
         state.domain1Available = true;
         state.domain2Available = true;
         state.domain3Available = true;
         state.domain4Available = true;
         return state;
     }
-    public static DEModStateSaverAndLoader getServerState(MinecraftServer server) {
+    public static DomainAvailabilityState getServerState(MinecraftServer server) {
         PersistentStateManager persistentStateManager = server.getWorld(World.OVERWORLD).getPersistentStateManager();
-        DEModStateSaverAndLoader state = persistentStateManager.getOrCreate(DEModStateSaverAndLoader::createFromNbt, DEModStateSaverAndLoader::createNew, BCSMPContentMain.DE_MOD_ID);
+        DomainAvailabilityState state = persistentStateManager.getOrCreate(DomainAvailabilityState::createFromNbt, DomainAvailabilityState::createNew, "domain_availability");
         state.markDirty();
         return state;
     }
     public static void setDomainAvailable(RegistryKey<World> domainKey, MinecraftServer server) {
-        DEModStateSaverAndLoader state = getServerState(server);
+        DomainAvailabilityState state = getServerState(server);
         if (domainKey == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
             state.domain1Available = true;
         } else if (domainKey == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
@@ -62,7 +62,7 @@ public class DEModStateSaverAndLoader extends PersistentState {
         }
     }
     public static void setDomainUnavailable(RegistryKey<World> domainKey, MinecraftServer server) {
-        DEModStateSaverAndLoader state = getServerState(server);
+        DomainAvailabilityState state = getServerState(server);
         if (domainKey == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
             state.domain1Available = false;
         } else if (domainKey == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
@@ -74,7 +74,7 @@ public class DEModStateSaverAndLoader extends PersistentState {
         }
     }
     public static DefaultedList<RegistryKey<World>> getAvailableDomains(MinecraftServer server) {
-        DEModStateSaverAndLoader state = getServerState(server);
+        DomainAvailabilityState state = getServerState(server);
         DefaultedList<RegistryKey<World>> domains = DefaultedList.of();
         if (state.domain1Available) {
             domains.add(DEModDimensions.DOMAIN_1_LEVEL_KEY);

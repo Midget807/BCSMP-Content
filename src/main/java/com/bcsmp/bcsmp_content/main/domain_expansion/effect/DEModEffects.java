@@ -2,7 +2,7 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.effect;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.custom.DomainDeathEffect;
-import com.bcsmp.bcsmp_content.main.domain_expansion.effect.custom.EmptyStatusEffect;
+import com.bcsmp.bcsmp_content.main.common.effect.EmptyStatusEffect;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
 import net.minecraft.registry.Registries;

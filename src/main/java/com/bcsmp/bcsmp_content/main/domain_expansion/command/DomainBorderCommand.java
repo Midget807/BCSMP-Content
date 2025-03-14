@@ -1,5 +1,6 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.command;
 
+import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.border.DomainBorder;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -51,10 +52,37 @@ public class DomainBorderCommand {
             Text.translatable("commands.worldborder.damage.amount.failed")
     );
     public static LiteralArgumentBuilder<ServerCommandSource> register(CommandDispatcher<ServerCommandSource> dispatcher) {
-        return literal("border")
-                .then(literal("add")
-                        .then(literal("all")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+        LiteralArgumentBuilder<ServerCommandSource> border = literal("border");
+        border.then(literal("create")
+                .then(argument("centerX", doubleArg())
+                        .then(argument("centerZ", doubleArg())
+                                .then(argument("size", doubleArg())
+                                        .executes(context -> {
+                                            DomainBorder domainBorder = new DomainBorder();
+                                            domainBorder.setCenter(getDouble(context, "centerX"), getDouble(context, "centerZ"));
+                                            domainBorder.setSize(getDouble(context, "size"));
+                                            return 1;
+                                        })
+                                )
+                        )
+                )
+        );
+        border.then(literal("add")
+                .then(literal("all")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
+                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY
+                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
+                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
+                                        ) {
+                                            return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
@@ -62,145 +90,145 @@ public class DomainBorderCommand {
                                                         || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
                                                         || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
                                                 ) {
-                                                    return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
-                                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY
-                                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
-                                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
-                                                        ) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-                        .then(literal("dark_plains")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                )
+                .then(literal("dark_plains")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-                        .then(literal("barrens")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                )
+                .then(literal("barrens")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-                        .then(literal("tundra")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
-                                        .executes(context -> {
-                                            for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
-                                                }
-                                            }
-                                            return 1;
-                                        })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
-                                )
-                        )
-                        .then(literal("crystal_cave")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                )
+                .then(literal("tundra")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-
                 )
-                .then(literal("set")
-                        .then(literal("all")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                .then(literal("crystal_cave")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"), 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
+                                        .executes(context -> {
+                                            for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                                if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            serverWorld.getWorldBorder().getSize() + getDouble(context, "radius"),
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
+                                                }
+                                            }
+                                            return 1;
+                                        })
+                                )
+                        )
+                )
+
+        );
+        border.then(literal("set")
+                .then(literal("all")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
+                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY
+                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
+                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
+                                        ) {
+                                            return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
@@ -208,187 +236,175 @@ public class DomainBorderCommand {
                                                         || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
                                                         || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
                                                 ) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            getDouble(context, "radius") * 2,
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
-                                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY
-                                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
-                                                                || serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
-                                                        ) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    getDouble(context, "radius") * 2,
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-                        .then(literal("dark_plains")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                )
+                .then(literal("dark_plains")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            getDouble(context, "radius") * 2,
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    getDouble(context, "radius") * 2,
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-                        .then(literal("barrens")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                )
+                .then(literal("barrens")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            getDouble(context, "radius") * 2,
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    getDouble(context, "radius") * 2,
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-                        .then(literal("tundra")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
-                                        .executes(context -> {
-                                            for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
-                                                }
-                                            }
-                                            return 1;
-                                        })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    getDouble(context, "radius") * 2,
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
-                                )
-                        )
-                        .then(literal("crystal_cave")
-                                .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                )
+                .then(literal("tundra")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
                                             for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
                                                 if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                    return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            getDouble(context, "radius") * 2,
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
                                                 }
                                             }
                                             return 1;
                                         })
-                                        .then(argument("time", integer(0))
-                                                .executes(context -> {
-                                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
-                                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
-                                                            return executeSet(
-                                                                    context.getSource(),
-                                                                    serverWorld,
-                                                                    getDouble(context, "radius") * 2,
-                                                                    serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
-                                                            );
-                                                        }
-                                                    }
-                                                    return 1;
-                                                })
-                                        )
                                 )
                         )
-
                 )
-                .then(literal("center")
-                        .then(literal("all")
-                                .then(argument("pos", vec2())
+                .then(literal("crystal_cave")
+                        .then(argument("radius", doubleArg(-5.999997E7F, 5.999997E7F))
+                                .executes(context -> {
+                                    for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                        if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
+                                            return executeSet(context.getSource(), serverWorld, getDouble(context, "radius") * 2, 0L);
+                                        }
+                                    }
+                                    return 1;
+                                })
+                                .then(argument("time", integer(0))
                                         .executes(context -> {
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_1_LEVEL_KEY);
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_2_LEVEL_KEY);
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_3_LEVEL_KEY);
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_4_LEVEL_KEY);
+                                            for (ServerWorld serverWorld : context.getSource().getServer().getWorlds()) {
+                                                if (serverWorld.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY) {
+                                                    return executeSet(
+                                                            context.getSource(),
+                                                            serverWorld,
+                                                            getDouble(context, "radius") * 2,
+                                                            serverWorld.getWorldBorder().getSizeLerpTime() + getInteger(context, "time") * 1000L
+                                                    );
+                                                }
+                                            }
                                             return 1;
                                         })
                                 )
                         )
-                        .then(literal("dark_plains")
-                                .then(argument("pos", vec2())
-                                        .executes(context -> {
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_1_LEVEL_KEY);
-                                            return 1;
-                                        })
-                                )
+                )
+
+        );
+        border.then(literal("center")
+                .then(literal("all")
+                        .then(argument("pos", vec2())
+                                .executes(context -> {
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_1_LEVEL_KEY);
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_2_LEVEL_KEY);
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_3_LEVEL_KEY);
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_4_LEVEL_KEY);
+                                    return 1;
+                                })
                         )
-                        .then(literal("barrens")
-                                .then(argument("pos", vec2())
-                                        .executes(context -> {
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_2_LEVEL_KEY);
-                                            return 1;
-                                        })
-                                )
+                )
+                .then(literal("dark_plains")
+                        .then(argument("pos", vec2())
+                                .executes(context -> {
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_1_LEVEL_KEY);
+                                    return 1;
+                                })
                         )
-                        .then(literal("tundra")
-                                .then(argument("pos", vec2())
-                                        .executes(context -> {
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_3_LEVEL_KEY);
-                                            return 1;
-                                        })
-                                )
+                )
+                .then(literal("barrens")
+                        .then(argument("pos", vec2())
+                                .executes(context -> {
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_2_LEVEL_KEY);
+                                    return 1;
+                                })
                         )
-                        .then(literal("crystal_cave")
-                                .then(argument("pos", vec2())
-                                        .executes(context -> {
-                                            executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_4_LEVEL_KEY);
-                                            return 1;
-                                        })
-                                )
+                )
+                .then(literal("tundra")
+                        .then(argument("pos", vec2())
+                                .executes(context -> {
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_3_LEVEL_KEY);
+                                    return 1;
+                                })
                         )
-                );
+                )
+                .then(literal("crystal_cave")
+                        .then(argument("pos", vec2())
+                                .executes(context -> {
+                                    executeCenter(context.getSource(), getVec2(context, "pos"), DEModDimensions.DOMAIN_4_LEVEL_KEY);
+                                    return 1;
+                                })
+                        )
+                )
+        );
+        return border;
     }
 
     private static int executeSet(ServerCommandSource source, ServerWorld world, double distance, long time) throws CommandSyntaxException {

@@ -4,8 +4,7 @@ import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainExpansionItem;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.DomainPillarScreenHandler;
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModStateSaverAndLoader;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DomainAvailabilityState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -91,7 +90,7 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                                     worldBorder.setSize(radius * 2);
                                 }
                             }
-                            DEModStateSaverAndLoader.setDomainUnavailable(domainKey, server);
+                            DomainAvailabilityState.setDomainUnavailable(domainKey, server);
                         } else {
                             this.client.player.sendMessage(Text.literal("All domains are occupied").formatted(Formatting.RED), true);
                         }
@@ -107,7 +106,7 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
     }
 
     private RegistryKey<World> getRandomDomain(Random random, MinecraftServer server) {
-        DefaultedList<RegistryKey<World>> domains = DEModStateSaverAndLoader.getAvailableDomains(server);
+        DefaultedList<RegistryKey<World>> domains = DomainAvailabilityState.getAvailableDomains(server);
         if (!domains.isEmpty()) {
             int index = random.nextBetween(0, MathHelper.clamp(domains.size() - 1, 0, 3));
             return domains.get(index);
