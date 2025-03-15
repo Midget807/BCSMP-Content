@@ -16,8 +16,9 @@ import java.util.concurrent.CompletableFuture;
 
 public class DEModItemTagProvider extends FabricTagProvider.ItemTagProvider {
     public static final TagKey<Item> PILLAR_SOUL_BLOCKS = TagKey.of(RegistryKeys.ITEM, BCSMPContentMain.domainExpansionId("pillar_soul_blocks"));
-    public DEModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture, @Nullable BlockTagProvider blockTagProvider) {
-        super(output, completableFuture, blockTagProvider);
+
+    public DEModItemTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+        super(output, completableFuture);
     }
 
     @Override

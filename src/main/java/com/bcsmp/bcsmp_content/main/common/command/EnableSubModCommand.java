@@ -1,7 +1,7 @@
 package com.bcsmp.bcsmp_content.main.common.command;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.SubModState;
+import com.bcsmp.bcsmp_content.main.common.util.SubModState;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.command.ServerCommandSource;

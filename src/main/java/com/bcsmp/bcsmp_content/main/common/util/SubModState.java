@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.util;
+package com.bcsmp.bcsmp_content.main.common.util;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
@@ -8,8 +8,8 @@ import net.minecraft.world.PersistentStateManager;
 public class SubModState extends PersistentState {
     public static final String DOMAIN_EXPANSION_ENABLED_KEY = "DomainExpansionEnabled";
     public static final String CHARTER_FIX_ENABLED_KEY = "CharterFixEnabled";
-    public boolean domainExpansionModEnabled = false; // TODO: 14/03/2025 change to default true when mod is ready
-    public boolean charterFixModEnabled = true;
+    public boolean domainExpansionModEnabled = true;
+    public boolean charterFixModEnabled = false;
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
         nbt.putBoolean(DOMAIN_EXPANSION_ENABLED_KEY, domainExpansionModEnabled);

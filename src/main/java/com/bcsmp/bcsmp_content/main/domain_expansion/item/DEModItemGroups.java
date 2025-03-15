@@ -2,7 +2,7 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.item;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.SubModState;
+import com.bcsmp.bcsmp_content.main.common.util.SubModState;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.client.MinecraftClient;

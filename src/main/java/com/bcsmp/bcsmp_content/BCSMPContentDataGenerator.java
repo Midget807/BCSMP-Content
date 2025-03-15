@@ -15,6 +15,7 @@ public class BCSMPContentDataGenerator implements DataGeneratorEntrypoint {
 		//Domain Expansion Mod
 		pack.addProvider(DEModModelProvider::new);
 		pack.addProvider(DEModBlockTagProvider::new);
+		pack.addProvider(DEModItemTagProvider::new);
 		pack.addProvider(DEModLootTableGenerator::new);
 		pack.addProvider(DEModRecipeProvider::new);
 		pack.addProvider(DEModWorldGenerator::new);

@@ -1,8 +1,7 @@
 package com.bcsmp.bcsmp_content.mixin.common;
 
-import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModUtil;
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.SubModState;
+import com.bcsmp.bcsmp_content.main.common.util.SubModState;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.CraftingResultInventory;
@@ -11,8 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Text;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

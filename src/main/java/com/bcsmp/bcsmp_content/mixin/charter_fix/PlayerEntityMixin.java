@@ -9,15 +9,33 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
 import java.util.List;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity {
+public abstract class PlayerEntityMixin extends LivingEntity implements CharterAttacker {
+    private boolean usingCharter;
+
+    public boolean isUsingCharter() {
+        return usingCharter;
+    }
+
+    @Override
+    public void setUsingCharter(boolean usingCharter) {
+        this.usingCharter = usingCharter;
+    }
 
     public PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
@@ -37,5 +55,26 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         } else {
             return false;
         }
+    }
+    @Unique
+    private boolean checkHasLesserDivinity(LivingEntity attacker) {
+        if (this.getAttacker() != null && this.getAttacker().isPlayer()) {
+            PlayerEntity attackerPlayer = (PlayerEntity) this.getAttacker();
+            PlayerInventory playerInventory = attackingPlayer.getInventory();
+            DefaultedList<Item> inventoryStackItems = DefaultedList.of();
+            for (int i = 0; i < playerInventory.size(); i++) {
+                inventoryStackItems.add(i, playerInventory.getStack(i).getItem());
+            }
+            if (!inventoryStackItems.isEmpty()) {
+                for (Item item : inventoryStackItems) {
+                    if (item == Registries.ITEM.get(Identifier.of("charter_the_religion", "lesser_divinity_1"))
+                            || item == Registries.ITEM.get(Identifier.of("charter_the_religion", "lesser_divinity_2"))
+                    ) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
