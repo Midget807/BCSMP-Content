@@ -26,10 +26,11 @@ public class DEModRecipeProvider extends FabricRecipeProvider {
                 .pattern("SXS")
                 .input('S', Items.STONE)
                 .input('D', Items.DIAMOND)
-                .input('X', Items.SOUL_SAND)
+                .input('X', DEModItemTagProvider.PILLAR_SOUL_BLOCKS)
                 .criterion(hasItem(Items.STONE), conditionsFromItem(Items.STONE))
                 .criterion(hasItem(Items.DIAMOND), conditionsFromItem(Items.DIAMOND))
                 .criterion(hasItem(Items.SOUL_SAND), conditionsFromItem(Items.SOUL_SAND))
+                .criterion(hasItem(Items.SOUL_SOIL), conditionsFromItem(Items.SOUL_SOIL))
                 .offerTo(exporter, new Identifier(getRecipeName(DEModBlocks.DOMAIN_PILLAR)));
 
         ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, DEModItems.DOMAIN_EXPANDER, 1)

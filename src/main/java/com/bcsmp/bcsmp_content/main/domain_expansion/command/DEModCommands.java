@@ -12,7 +12,6 @@ public class DEModCommands {
                     .requires(source -> source.hasPermissionLevel(2))
                     .then(DomainSetCommand.register(dispatcher))
                     .then(DomainQueryCommand.register(dispatcher))
-                    .then(DomainBorderCommand.register(dispatcher))
             );
         });
     }

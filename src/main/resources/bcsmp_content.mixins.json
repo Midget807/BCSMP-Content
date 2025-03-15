@@ -13,7 +13,8 @@
     "charter_fix.client.MouseMixin",
     "domain_expansion.client.InGameHudMixin",
     "domain_expansion.client.KeyboardMixin",
-    "domain_expansion.client.MouseMixin"
+    "domain_expansion.client.MouseMixin",
+    "domain_expansion.client.WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

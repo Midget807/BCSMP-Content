@@ -3,7 +3,7 @@
 	"id": "bcsmp_content",
 	"version": "${version}",
 	"name": "BCSMP Content",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Content for \"Basically Content SMP\"",
 	"authors": [
 		"Midget807"
 	],
@@ -31,13 +31,6 @@
 	"mixins": [
 		"bcsmp_content.mixins.json"
 	],
-	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/world/class_1941": [
-				"com/bcsmp/bcsmp_content/main.domain_expansion/worldgen/border/DomainCollision"
-			]
-		}
-	},
 	"accessWidener": "bcsmp_content.accesswidener",
 	"depends": {
 		"fabricloader": ">=0.16.10",

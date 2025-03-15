@@ -1,11 +1,8 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.network;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
-import com.bcsmp.bcsmp_content.main.domain_expansion.network.packet.S2C.DomainBorderInitializePacket;
 import com.bcsmp.bcsmp_content.main.domain_expansion.network.packet.S2C.ItemStackSyncPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.NetworkState;
 import net.minecraft.util.Identifier;
 
 public class DEModMessages {

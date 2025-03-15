@@ -11,5 +11,7 @@ public class BCSMPContentClient implements ClientModInitializer {
     public void onInitializeClient() {
         HandledScreens.register(DEModScreenHandlers.DOMAIN_PILLAR_SCREEN_HANDLER, DomainPillarScreen::new);
         DEModMessages.registerS2CPackets();
+
+
     }
 }

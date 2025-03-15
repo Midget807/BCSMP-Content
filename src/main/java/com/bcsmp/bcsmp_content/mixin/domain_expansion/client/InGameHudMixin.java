@@ -7,8 +7,11 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.entity.Entity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,6 +26,10 @@ public abstract class InGameHudMixin {
     private int domainTpEffectMaxDuration = 1;
     private boolean shouldTick = false;
 
+    protected InGameHudMixin(int scaledWidth) {
+        this.scaledWidth = scaledWidth;
+    }
+
     @Shadow
     protected abstract void renderOverlay(DrawContext context, Identifier texture, float opacity);
 
@@ -32,12 +39,6 @@ public abstract class InGameHudMixin {
 
     @Shadow
     private int scaledWidth;
-
-    @Shadow
-    private int scaledHeight;
-
-    @Shadow
-    public abstract void render(DrawContext context, float tickDelta);
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I", shift = At.Shift.BEFORE))
     private void domainExpansion$renderDomainDeathOverlay(DrawContext context, float tickDelta, CallbackInfo ci) {
@@ -70,6 +71,13 @@ public abstract class InGameHudMixin {
     @Unique
     private float getDomainTpPercent(float effectTicks, float effectDuration) {
         return MathHelper.clamp((effectTicks / effectDuration), 0, 1);
+    }
+    @Inject(method = "renderVignetteOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getWorldBorder()Lnet/minecraft/world/border/WorldBorder;"), cancellable = true)
+    private void domainExpansion$noDomainBorderVignette(DrawContext context, Entity entity, CallbackInfo ci) {
+         // TODO: 15/03/2025 add for domains
+        if (this.client.player.getWorld().getRegistryKey() == World.OVERWORLD) {
+            ci.cancel();
+        }
     }
 
 }
