@@ -12,5 +12,6 @@ public class CFModUtil {
                 entity.hasStatusEffect(CFModEffects.CHAINED) &&
                 !entity.isSpectator() &&
                 !(entity instanceof PlayerEntity player && player.isCreative());
+
     }
 }
