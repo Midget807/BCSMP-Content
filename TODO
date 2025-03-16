@@ -1,9 +1,7 @@
 //TODO make crystal cave features and add that shit to domain 4 -> based on dripstone features + with connected textures
-//TODO add custom dark plains rock features like in season 1 colosseum => dim 1
 //TODO add sandstone ruins like in R4t's vid => dim 2
 //TODO add custom ice spikes cuz vanilla aint doing shit => dim 3
 //TODO make custom soul particle for player death in domain
-//TODO make cool teleport particle when entering domain
+//TODO make cool teleport particle when entering domain & ambient pillar particles when activated
 //TODO make world border set based on xp
-//TODO change light level in dim 1 -> or change time
 //TODO implement multi world borders
