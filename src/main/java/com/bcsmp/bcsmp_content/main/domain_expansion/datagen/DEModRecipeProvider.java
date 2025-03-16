@@ -20,7 +20,7 @@ public class DEModRecipeProvider extends FabricRecipeProvider {
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, DEModBlocks.DOMAIN_PILLAR, 1)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, DEModBlocks.DOMAIN_PILLAR, 1)
                 .pattern("SDS")
                 .pattern("SDS")
                 .pattern("SXS")
@@ -28,12 +28,12 @@ public class DEModRecipeProvider extends FabricRecipeProvider {
                 .input('D', Items.DIAMOND)
                 .input('X', DEModItemTagProvider.PILLAR_SOUL_BLOCKS)
                 .criterion(hasItem(Items.STONE), conditionsFromItem(Items.STONE))
-                .criterion(hasItem(Items.DIAMOND), conditionsFromItem(Items.DIAMOND))
+                .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
                 .criterion(hasItem(Items.SOUL_SAND), conditionsFromItem(Items.SOUL_SAND))
                 .criterion(hasItem(Items.SOUL_SOIL), conditionsFromItem(Items.SOUL_SOIL))
                 .offerTo(exporter, new Identifier(getRecipeName(DEModBlocks.DOMAIN_PILLAR)));
 
-        ShapedRecipeJsonBuilder.create(RecipeCategory.MISC, DEModItems.DOMAIN_EXPANDER, 1)
+        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, DEModItems.DOMAIN_EXPANDER, 1)
                 .pattern("E")
                 .pattern("D")
                 .pattern("E")
