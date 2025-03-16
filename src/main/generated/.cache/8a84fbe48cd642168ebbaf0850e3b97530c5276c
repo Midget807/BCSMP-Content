@@ -1,10 +1,11 @@
-// 1.20.1	2025-02-21T23:44:11.4253652	BCSMP Content/Model Definitions
+// 1.20.1	2025-03-16T17:22:37.7774877	BCSMP Content/Model Definitions
 744fcbaebd95fae62e2d4cbe57af5eecf8d92c98 assets\domain_expansion\models\item\debugger.json
 af911e5f9c990a3b9eba1fd0ae8679998f5fa05f assets\domain_expansion\blockstates\withered_soil.json
 12231541951a3e931f8030830d3131355f5834de assets\domain_expansion\models\item\domain_obsidian.json
 a91fcf3f97aafd0f0b0826b3576f384d36d956d8 assets\domain_expansion\blockstates\domain_obsidian.json
 3bb34ba9ee19fe42e42abbbbf3b8c5feea03306a assets\domain_expansion\models\block\domain_obsidian.json
 780ebb26d4d9992e23db0722db337172b345dd56 assets\domain_expansion\models\item\domain_compressor.json
+16f3162f867217990e96f1bfb35202d52e29d2c1 assets\domain_expansion\models\item\domain_pillar.json
 65940f2d76c1abc934ba05dcf11b9ebd4c798ef4 assets\domain_expansion\blockstates\domain_pillar.json
 6893040d38a9987d6b756f78f875444bfc1c17ee assets\domain_expansion\models\block\withered_soil.json
 10bc69d6c9039179bce9118febb3fabea53141d3 assets\domain_expansion\models\item\withered_soil.json

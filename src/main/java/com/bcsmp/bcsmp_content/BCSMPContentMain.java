@@ -17,9 +17,6 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.surface.DEMo
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.DEModFeatures;
 import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

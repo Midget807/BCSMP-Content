@@ -81,15 +81,16 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             compressorNbt.putInt("Y", serverOwnerPlayer.getBlockY());
                             compressorNbt.putInt("Z", serverOwnerPlayer.getBlockZ());
                             serverOwnerPlayer.giveItemStack(compressor);
+                            this.getScreenHandler().getSlot(0).markDirty();
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
 
-                            if (domain != null) {
+                            /*if (domain != null) { todo fix cuz it changes border on server but not on client
                                 WorldBorder worldBorder = domain.getWorldBorder();
                                 worldBorder.setCenter(0.0, 0.0);
                                 if (radius >= 10) {
                                     worldBorder.setSize(radius * 2);
                                 }
-                            }
+                            }*/
                             DomainAvailabilityState.setDomainUnavailable(domainKey, server);
                         } else {
                             this.client.player.sendMessage(Text.literal("All domains are occupied").formatted(Formatting.RED), true);

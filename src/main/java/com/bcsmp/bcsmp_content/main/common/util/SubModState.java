@@ -24,8 +24,8 @@ public class SubModState extends PersistentState {
     }
     public static SubModState createNew() {
         SubModState state = new SubModState();
-        state.domainExpansionModEnabled = false; // TODO: 14/03/2025 change to default true when mod is ready
-        state.charterFixModEnabled = true;
+        state.domainExpansionModEnabled = true; // TODO: 14/03/2025 change to default true when mod is ready
+        state.charterFixModEnabled = false;
         return state;
     }
     public static SubModState getServerState(MinecraftServer server) {

@@ -6,11 +6,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.gen.feature.FeatureConfig;
 
-public record ObsidianSpikeConfig(int height, Identifier blockId) implements FeatureConfig {
+import java.util.List;
+
+public record ObsidianSpikeConfig(List<Identifier> obsidianSpikes) implements FeatureConfig {
     public static Codec<ObsidianSpikeConfig> CODEC = RecordCodecBuilder.create(
             instance -> instance.group(
-                    Codecs.POSITIVE_INT.fieldOf("height").forGetter(ObsidianSpikeConfig::height),
-                    Identifier.CODEC.fieldOf("blockId").forGetter(ObsidianSpikeConfig::blockId)
+                    Identifier.CODEC.listOf().fieldOf("obsidian_spikes").forGetter(ObsidianSpikeConfig::obsidianSpikes)
             ).apply(instance, ObsidianSpikeConfig::new)
     );
 }

@@ -1,4 +1,10 @@
 {
   "type": "domain_expansion:obsidian_spike",
-  "config": {}
+  "config": {
+    "obsidian_spikes": [
+      "domain_expansion:obsidian_spike/obsidian_spike_thin",
+      "domain_expansion:obsidian_spike/obsidian_spike_curved",
+      "domain_expansion:obsidian_spike/obsidian_spike_wide"
+    ]
+  }
 }

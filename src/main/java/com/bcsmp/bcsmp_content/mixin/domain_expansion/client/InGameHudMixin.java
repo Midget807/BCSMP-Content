@@ -3,6 +3,7 @@ package com.bcsmp.bcsmp_content.mixin.domain_expansion.client;
 import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModOverlayIds;
+import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -74,8 +75,12 @@ public abstract class InGameHudMixin {
     }
     @Inject(method = "renderVignetteOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getWorldBorder()Lnet/minecraft/world/border/WorldBorder;"), cancellable = true)
     private void domainExpansion$noDomainBorderVignette(DrawContext context, Entity entity, CallbackInfo ci) {
-         // TODO: 15/03/2025 add for domains
-        if (this.client.player.getWorld().getRegistryKey() == World.OVERWORLD) {
+        World world = this.client.player.getWorld();
+        if (world.getRegistryKey() == DEModDimensions.DOMAIN_1_LEVEL_KEY
+                || world.getRegistryKey() == DEModDimensions.DOMAIN_2_LEVEL_KEY
+                || world.getRegistryKey() == DEModDimensions.DOMAIN_3_LEVEL_KEY
+                || world.getRegistryKey() == DEModDimensions.DOMAIN_4_LEVEL_KEY
+        ) {
             ci.cancel();
         }
     }

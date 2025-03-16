@@ -42,9 +42,11 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 }
                 return false;
             } else {
+                this.dead = true;
                 return true;
             }
         } else {
+            this.dead = false;
             return false;
         }
     }

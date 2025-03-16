@@ -1,4 +1,4 @@
- {
+{
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
@@ -9,7 +9,7 @@
       "item": "minecraft:stone"
     },
     "X": {
-      "item": "minecraft:soul_sand"
+      "tag": "domain_expansion:pillar_soul_blocks"
     }
   },
   "pattern": [
