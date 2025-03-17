@@ -28,7 +28,12 @@ public class DomainPillarScreenHandler extends ScreenHandler {
         checkSize(inventory, 1);
         inventory.onOpen(playerInventory.player);
 
-        this.addSlot(new Slot(inventory, 0, 17 + 3 * 18, 20));
+        this.addSlot(new Slot(inventory, 0, 17 + 3 * 18, 20) {
+            @Override
+            public int getMaxItemCount() {
+                return 1;
+            }
+        });
 
         //adds player inventory slots
         for (int j = 0; j < 3; j++) {

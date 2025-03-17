@@ -1,13 +1,14 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.item.custom;
 
-import net.minecraft.client.item.TooltipContext;
+import com.bcsmp.bcsmp_content.main.domain_expansion.component.DEModDataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.text.Text;
@@ -17,7 +18,6 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +30,7 @@ public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip
     public UUID ownerUuid;
     public DefaultedList<PlayerEntity> targets = DefaultedList.of();
     public DefaultedList<UUID> targetUuids = DefaultedList.of();
-    public float domainRadius = 10;
+    public int domainRadius = 10;
 
     public DomainExpansionItem(Settings settings, PlayerEntity owner) {
         super(settings);
@@ -41,11 +41,6 @@ public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack handStack = player.getStackInHand(hand);
-        NbtCompound nbtCompound = handStack.getOrCreateNbt();
-        if (!nbtCompound.contains(TARGETS_KEY)) {
-            nbtCompound.put(TARGETS_KEY, new NbtList());
-        }
-        NbtList targetList = nbtCompound.getList(TARGETS_KEY, NbtElement.COMPOUND_TYPE);
         if (!world.isClient) {
             if (!player.isSneaking()) {
                 //Info Check
@@ -78,24 +73,32 @@ public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip
                 owner = player;
                 ownerUuid = owner.getUuid();
 
-                nbtCompound.putUuid(OWNER_KEY, ownerUuid);
+                NbtCompound ownerCompound = new NbtCompound();
+                ownerCompound.putUuid(OWNER_KEY, ownerUuid);
+                handStack.set(DEModDataComponentTypes.EXPANDER_OWNER, NbtComponent.of(ownerCompound));
+
                 for (PlayerEntity playerEntity : targets) {
                     targetUuids.add(playerEntity.getUuid());
                 }
-                for (int i = 0; i < targetUuids.size(); i++) {
+                NbtList targetNbtList = new NbtList();
+                for (UUID targetUuid : targetUuids) {
                     NbtCompound newTargetNbt = new NbtCompound();
-                    newTargetNbt.putUuid(TARGETS_KEY, targetUuids.get(i));
-                    targetList.add(i, newTargetNbt);
+                    newTargetNbt.putUuid(TARGETS_KEY, targetUuid);
+                    targetNbtList.add(newTargetNbt);
                 }
+                NbtCompound targetListCompound = new NbtCompound();
+                targetListCompound.put(TARGETS_KEY, targetNbtList);
+                handStack.set(DEModDataComponentTypes.EXPANDER_TARGETS, NbtComponent.of(targetListCompound));
+
                 this.domainRadius = getDomainRadius(player);
-                nbtCompound.putFloat(RADIUS_KEY, this.domainRadius);
+                handStack.set(DEModDataComponentTypes.EXPANDER_RADIUS, this.domainRadius);
             }
         }
         return TypedActionResult.pass(handStack);
     }
 
-    public float getDomainRadius(PlayerEntity player) {
-        return (float) (player.experienceLevel + 10);
+    public int getDomainRadius(PlayerEntity player) {
+        return (player.experienceLevel + 10);
     }
 
     public DefaultedList<PlayerEntity> getPlayersInRange(World world, PlayerEntity player) {
@@ -114,19 +117,14 @@ public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        super.appendTooltip(stack, world, tooltip, context);
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (owner == null) {
             tooltip.add(Text.literal("Owner not found").formatted(Formatting.DARK_GRAY));
         } else {
             tooltip.add(Text.literal("Owner: ").append(owner.getName()).formatted(Formatting.GRAY));
         }
         tooltip.add(Text.literal("Radius: " + this.domainRadius));
-    }
-
-    @Override
-    public boolean isNbtSynced() {
-        return true;
+        super.appendTooltip(stack, context, tooltip, type);
     }
 
 }

@@ -5,6 +5,7 @@ import com.bcsmp.bcsmp_content.main.common.command.CommonModCommands;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlockEntities;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.command.DEModCommands;
+import com.bcsmp.bcsmp_content.main.domain_expansion.component.DEModDataComponentTypes;
 import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.entity.DEModAttributes;
@@ -23,10 +24,10 @@ import org.slf4j.LoggerFactory;
 
 public class BCSMPContentMain implements ModInitializer {
 	public static Identifier domainExpansionId(String path) {
-		return new Identifier(DE_MOD_ID, path);
+		return Identifier.of(DE_MOD_ID, path);
 	}
 	public static Identifier charterFixId(String path) {
-		return new Identifier(CF_MOD_ID, path);
+		return Identifier.of(CF_MOD_ID, path);
 	}
 	public static final String DE_MOD_ID = "domain_expansion";
 	public static final String CF_MOD_ID = "charter_fix";
@@ -60,6 +61,7 @@ public class BCSMPContentMain implements ModInitializer {
 		DEModBiomeModifier.registerDomainExpansionBiomeModifier();
 		DEModEffects.registerDomainExpansionEffects();
 		DEModCommands.registerDomainExpansionCommands();
+		DEModDataComponentTypes.registerDomainExpansionDataComponentTypes();
 
 	}
 }

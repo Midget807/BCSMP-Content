@@ -1,16 +1,20 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.client;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
+import com.bcsmp.bcsmp_content.main.domain_expansion.component.DEModDataComponentTypes;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.custom.DomainExpansionItem;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.DomainPillarScreenHandler;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DomainAvailabilityState;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ScreenHandlerProvider;
+import net.minecraft.client.render.GameRenderer;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -42,7 +46,6 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
         this.renderTeleportButton(context, mouseX, mouseY, delta);
         this.drawMouseoverTooltip(context, mouseX, mouseY);
@@ -54,14 +57,13 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
             DomainPillarScreenHandler domainPillarScreenHandler = (DomainPillarScreenHandler) this.client.player.currentScreenHandler;
             if (domainPillarScreenHandler.getInventory().getStack(0).getItem() == DEModItems.DOMAIN_EXPANDER && this.client.world != null) {
                 ItemStack expander = domainPillarScreenHandler.getInventory().getStack(0);
-                if (expander.getNbt() != null &&
-                        expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY) != null &&
-                        expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE) != null &&
-                        expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY) >= 10
-                ) {
-                    float radius = expander.getNbt().getFloat(DomainExpansionItem.RADIUS_KEY);
-                    UUID ownerPlayer = expander.getNbt().getUuid(DomainExpansionItem.OWNER_KEY);
-                    NbtList targetNbtList = expander.getNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE);
+                NbtComponent expanderOwnerComponent = expander.get(DEModDataComponentTypes.EXPANDER_OWNER);
+                NbtComponent expanderTargetComponent = expander.get(DEModDataComponentTypes.EXPANDER_TARGETS);
+                Integer expanderRadiusComponent = expander.get(DEModDataComponentTypes.EXPANDER_RADIUS);
+                if (expanderOwnerComponent != null && expanderTargetComponent != null && expanderRadiusComponent != null && expanderRadiusComponent >= 10) {
+                    int radius = expanderRadiusComponent;
+                    UUID ownerPlayer = expanderOwnerComponent.copyNbt().getUuid(DomainExpansionItem.OWNER_KEY);
+                    NbtList targetNbtList = expanderTargetComponent.copyNbt().getList(DomainExpansionItem.TARGETS_KEY, NbtElement.COMPOUND_TYPE);
                     MinecraftServer server = this.client.getServer();
                     if (server != null) {
                         ServerPlayerEntity serverOwnerPlayer = server.getPlayerManager().getPlayer(ownerPlayer);
@@ -76,21 +78,16 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                                 }
                             }
                             ItemStack compressor = new ItemStack(DEModItems.DOMAIN_COMPRESSOR);
-                            NbtCompound compressorNbt = compressor.getOrCreateNbt();
-                            compressorNbt.putInt("X", serverOwnerPlayer.getBlockX());
-                            compressorNbt.putInt("Y", serverOwnerPlayer.getBlockY());
-                            compressorNbt.putInt("Z", serverOwnerPlayer.getBlockZ());
+                            compressor.set(DEModDataComponentTypes.COMPRESSOR_ORIGIN_POS, serverOwnerPlayer.getBlockPos());
                             serverOwnerPlayer.giveItemStack(compressor);
                             this.getScreenHandler().getSlot(0).markDirty();
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
 
-                            /*if (domain != null) { todo fix cuz it changes border on server but not on client
+                            if (domain != null) {
                                 WorldBorder worldBorder = domain.getWorldBorder();
                                 worldBorder.setCenter(0.0, 0.0);
-                                if (radius >= 10) {
-                                    worldBorder.setSize(radius * 2);
-                                }
-                            }*/
+                                worldBorder.setSize(radius * 2 + 1);
+                            }
                             DomainAvailabilityState.setDomainUnavailable(domainKey, server);
                         } else {
                             this.client.player.sendMessage(Text.literal("All domains are occupied").formatted(Formatting.RED), true);
@@ -118,6 +115,10 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.setShaderTexture(0, TEXTURE);
+
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
         context.drawTexture(TEXTURE, i, j, 0, 0, this.backgroundWidth, this.backgroundHeight);

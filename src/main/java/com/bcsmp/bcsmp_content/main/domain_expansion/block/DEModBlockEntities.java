@@ -10,7 +10,7 @@ import net.minecraft.registry.Registry;
 public class DEModBlockEntities {
     public static final BlockEntityType<DomainPillarBlockEntity> DOMAIN_PILLAR_BLOCK_ENTITY =
             Registry.register(Registries.BLOCK_ENTITY_TYPE, BCSMPContentMain.domainExpansionId("domain_pillar"),
-                    FabricBlockEntityTypeBuilder.create(DomainPillarBlockEntity::new, DEModBlocks.DOMAIN_PILLAR).build()
+                    BlockEntityType.Builder.create(DomainPillarBlockEntity::new, DEModBlocks.DOMAIN_PILLAR).build()
             );
 
     public static void registerDomainExpansionBlockEntities() {

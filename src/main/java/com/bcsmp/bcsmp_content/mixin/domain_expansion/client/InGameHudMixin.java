@@ -8,8 +8,8 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.entity.Entity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -28,7 +28,6 @@ public abstract class InGameHudMixin {
     private boolean shouldTick = false;
 
     protected InGameHudMixin(int scaledWidth) {
-        this.scaledWidth = scaledWidth;
     }
 
     @Shadow
@@ -38,11 +37,8 @@ public abstract class InGameHudMixin {
     @Final
     private MinecraftClient client;
 
-    @Shadow
-    private int scaledWidth;
-
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I", shift = At.Shift.BEFORE))
-    private void domainExpansion$renderDomainDeathOverlay(DrawContext context, float tickDelta, CallbackInfo ci) {
+    @Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I", shift = At.Shift.BEFORE))
+    private void domainExpansion$renderDomainDeathOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         if (this.client.player != null && this.client.player.hasStatusEffect(DEModEffects.DOMAIN_DEATH_EFFECT)) {
             this.renderOverlay(context, DEModOverlayIds.DOMAIN_DEATH_OVERLAY, 0.3f);
         }
@@ -67,6 +63,7 @@ public abstract class InGameHudMixin {
                 this.shouldTick = false;
             }
         }
+
     }
 
     @Unique

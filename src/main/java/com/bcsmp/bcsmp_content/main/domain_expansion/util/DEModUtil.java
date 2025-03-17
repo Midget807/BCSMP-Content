@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class DEModUtil {
     public static boolean shouldLockPlayerMovement(@Nullable LivingEntity entity) {

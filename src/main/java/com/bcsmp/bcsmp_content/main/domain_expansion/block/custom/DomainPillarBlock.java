@@ -1,26 +1,22 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.block.custom;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.custom.entity.DomainPillarBlockEntity;
+import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.pathing.NavigationType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -32,9 +28,15 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
     public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
     public VoxelShape BOTTOM_SHAPE = Block.createCuboidShape(1, 0, 1, 15, 16, 15);
     public VoxelShape TOP_SHAPE = Block.createCuboidShape(1, 0, 1, 15, 14, 15);
+    public static final MapCodec<DomainPillarBlock> CODEC = DomainPillarBlock.createCodec(DomainPillarBlock::new);
     public DomainPillarBlock(Settings settings) {
         super(settings);
         this.setDefaultState(this.stateManager.getDefaultState().with(WATERLOGGED, Boolean.FALSE));
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return CODEC;
     }
 
     @Nullable
@@ -64,19 +66,6 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
         return state.get(HALF) == DoubleBlockHalf.LOWER ? blockState.isSideSolidFullSquare(world, blockPos, Direction.UP) : blockState.isOf(this);
     }
 
-    @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (world.isClient) {
-            return ActionResult.SUCCESS;
-        } else {
-            NamedScreenHandlerFactory namedScreenHandlerFactory = (DomainPillarBlockEntity) world.getBlockEntity(pos);
-            if (namedScreenHandlerFactory != null) {
-                player.openHandledScreen(namedScreenHandlerFactory);
-            }
-            return ActionResult.CONSUME;
-        }
-    }
-
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -93,12 +82,7 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        DomainPillarBlockEntity blockEntity = new DomainPillarBlockEntity(pos, state);
-        /*DefaultedList<ItemStack> inventory = DefaultedList.ofSize(3, ItemStack.EMPTY);
-        inventory.set(1, new ItemStack(Items.STICK));
-        inventory.set(2, new ItemStack(Items.BRICK));
-        blockEntity.setInventory(inventory);*/
-        return blockEntity;
+        return new DomainPillarBlockEntity(pos, state);
     }
 
     @Override
@@ -129,10 +113,9 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
             }
         }
     }
-
     @Override
-    public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (!world.isClient && player.isCreative()) {
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (!world.isClient && (player.isCreative() || !player.canHarvest(state))) {
             DoubleBlockHalf doubleBlockHalf = state.get(HALF);
             if (doubleBlockHalf == DoubleBlockHalf.UPPER) {
                 BlockPos blockPos = pos.down();
@@ -145,12 +128,9 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
             }
         }
         super.onBreak(world, pos, state, player);
+        return state;
     }
 
-    @Override
-    public boolean canPathfindThrough(BlockState state, BlockView world, BlockPos pos, NavigationType type) {
-        return false;
-    }
 
     @Override
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {

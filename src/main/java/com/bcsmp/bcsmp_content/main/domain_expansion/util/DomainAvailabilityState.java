@@ -4,6 +4,7 @@ import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.PersistentState;
@@ -20,14 +21,14 @@ public class DomainAvailabilityState extends PersistentState {
     public Boolean domain3Available = true;
     public Boolean domain4Available = true;
     @Override
-    public NbtCompound writeNbt(NbtCompound nbt) {
+    public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putBoolean(DOMAIN_1_AVAILABLE_KEY, domain1Available);
         nbt.putBoolean(DOMAIN_2_AVAILABLE_KEY, domain2Available);
         nbt.putBoolean(DOMAIN_3_AVAILABLE_KEY, domain3Available);
         nbt.putBoolean(DOMAIN_4_AVAILABLE_KEY, domain4Available);
         return nbt;
     }
-    public static DomainAvailabilityState createFromNbt(NbtCompound nbt) {
+    public static DomainAvailabilityState createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         DomainAvailabilityState state = new DomainAvailabilityState();
         state.domain1Available = nbt.getBoolean(DOMAIN_1_AVAILABLE_KEY);
         state.domain2Available = nbt.getBoolean(DOMAIN_2_AVAILABLE_KEY);
@@ -43,9 +44,14 @@ public class DomainAvailabilityState extends PersistentState {
         state.domain4Available = true;
         return state;
     }
+    public static final Type<DomainAvailabilityState> type = new Type<>(
+            DomainAvailabilityState::createNew,
+            DomainAvailabilityState::createFromNbt,
+            null
+    );
     public static DomainAvailabilityState getServerState(MinecraftServer server) {
-        PersistentStateManager persistentStateManager = server.getWorld(World.OVERWORLD).getPersistentStateManager();
-        DomainAvailabilityState state = persistentStateManager.getOrCreate(DomainAvailabilityState::createFromNbt, DomainAvailabilityState::createNew, "domain_availability");
+        PersistentStateManager persistentStateManager = server.getOverworld().getPersistentStateManager();
+        DomainAvailabilityState state = persistentStateManager.getOrCreate(type, "domain_availability");
         state.markDirty();
         return state;
     }

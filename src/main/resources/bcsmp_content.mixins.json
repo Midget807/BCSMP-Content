@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "com.bcsmp.bcsmp_content.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "charter_fix.LivingEntityMixin",
     "common.BlockDisabledModCrafting",

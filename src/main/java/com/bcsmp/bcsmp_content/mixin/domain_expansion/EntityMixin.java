@@ -1,5 +1,6 @@
 package com.bcsmp.bcsmp_content.mixin.domain_expansion;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,8 +28,8 @@ public abstract class EntityMixin implements Nameable, EntityLike, CommandOutput
     @Shadow @Final protected DataTracker dataTracker;
     private static final TrackedData<Integer> DOMAIN_TP_EFFECT_TICKS = DataTracker.registerData(Entity.class, TrackedDataHandlerRegistry.INTEGER);
     @Inject(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;FROZEN_TICKS:Lnet/minecraft/entity/data/TrackedData;"))
-    public void domainExpansion$addCustomData(EntityType<?> type, World world, CallbackInfo ci) {
-        this.dataTracker.startTracking(DOMAIN_TP_EFFECT_TICKS, 0);
+    public void domainExpansion$addCustomData(EntityType<?> type, World world, CallbackInfo ci, @Local DataTracker.Builder builder) {
+        builder.add(DOMAIN_TP_EFFECT_TICKS, 0);
     }
     @Unique
     public int getDomainTpEffectTicks() {
@@ -39,6 +39,7 @@ public abstract class EntityMixin implements Nameable, EntityLike, CommandOutput
     public void setDomainTpEffectTicks(int tpEffectTicks) {
         this.dataTracker.set(DOMAIN_TP_EFFECT_TICKS, tpEffectTicks);
     }
+
     @Inject(method = "writeNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getFrozenTicks()I", shift = At.Shift.BEFORE))
     public void domainExpansion$writeCustomData(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
         if (this.getDomainTpEffectTicks() > 0) {
