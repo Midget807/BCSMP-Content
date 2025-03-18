@@ -115,7 +115,6 @@ public class DomainExpansionItem extends Item {
         player.damage(player.getDamageSources().magic(), 14.0f);
         return entitiesInSphere;
     }
-    //todo something broke
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {

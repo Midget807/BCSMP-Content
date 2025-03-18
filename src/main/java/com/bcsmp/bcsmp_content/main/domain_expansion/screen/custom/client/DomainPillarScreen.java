@@ -38,6 +38,11 @@ import java.util.UUID;
 @Environment(EnvType.CLIENT)
 public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler> implements ScreenHandlerProvider<DomainPillarScreenHandler> {
     private static final Identifier TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_window.png");
+    private static final Identifier DOMAIN_1_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_1.png");
+    private static final Identifier DOMAIN_2_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_2.png");
+    private static final Identifier DOMAIN_3_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_3.png");
+    private static final Identifier DOMAIN_4_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_4.png");
+    private static final Identifier DOMAIN_UNAVAILABLE_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_unavailable.png");//todo this shit
     public DomainPillarScreen(DomainPillarScreenHandler handler, PlayerInventory playerInventory, Text title) {
         super(handler, playerInventory, title);
         this.backgroundHeight = 133;
@@ -49,6 +54,11 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
         super.render(context, mouseX, mouseY, delta);
         this.renderTeleportButton(context, mouseX, mouseY, delta);
         this.drawMouseoverTooltip(context, mouseX, mouseY);
+        this.renderDomainAvailability(context, mouseX, mouseY,delta);
+    }
+
+    private void renderDomainAvailability(DrawContext context, int mouseX, int mouseY, float delta) {
+
     }
 
     private void renderTeleportButton(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -84,7 +94,7 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
 
                             if (domain != null) {
-                                WorldBorder worldBorder = domain.getWorldBorder();
+                                WorldBorder worldBorder = domain.getWorldBorder();//todo requires multi border i think
                                 worldBorder.setCenter(0.0, 0.0);
                                 worldBorder.setSize(radius * 2 + 1);
                             }
