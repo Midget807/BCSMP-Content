@@ -16,7 +16,9 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShape;
@@ -93,6 +95,16 @@ public class DomainPillarBlock extends BlockWithEntity implements BlockEntityPro
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
+        if (world.getBlockEntity(pos) instanceof DomainPillarBlockEntity domainPillarBlockEntity) {
+            player.openHandledScreen(domainPillarBlockEntity);
+            return ActionResult.SUCCESS;
+        } else {
+            return ActionResult.PASS;
+        }
     }
 
     @Override

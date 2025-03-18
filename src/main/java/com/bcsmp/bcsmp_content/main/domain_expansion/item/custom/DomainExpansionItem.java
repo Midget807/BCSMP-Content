@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.UUID;
 
-public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip 
+public class DomainExpansionItem extends Item {
     public static final String OWNER_KEY = "Owner";
     public static final String TARGETS_KEY = "Targets";
     public static final String RADIUS_KEY = "Radius";
@@ -115,6 +115,7 @@ public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip
         player.damage(player.getDamageSources().magic(), 14.0f);
         return entitiesInSphere;
     }
+    //todo something broke
 
     @Override
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
@@ -125,6 +126,8 @@ public class DomainExpansionItem extends Item {// TODO: 8/03/2025 shit tooltip
         }
         tooltip.add(Text.literal("Radius: " + this.domainRadius));
         super.appendTooltip(stack, context, tooltip, type);
+        //todo check tooltip
+
     }
 
 }

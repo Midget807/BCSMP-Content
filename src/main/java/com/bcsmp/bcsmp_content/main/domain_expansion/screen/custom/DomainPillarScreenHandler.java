@@ -1,30 +1,25 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.DEModScreenHandlers;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.math.BlockPos;
 
 public class DomainPillarScreenHandler extends ScreenHandler {
     public final Inventory inventory;
 
-    public DomainPillarScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory) {
-        this(type, syncId, playerInventory, new SimpleInventory(1));
+    public DomainPillarScreenHandler(int syncId, PlayerInventory playerInventory, BlockPos pos) {
+        this(syncId, playerInventory, playerInventory.player.getWorld().getBlockEntity(pos));
     }
-    public static DomainPillarScreenHandler create(int syncId, PlayerInventory playerInventory) {
-        return new DomainPillarScreenHandler(DEModScreenHandlers.DOMAIN_PILLAR_SCREEN_HANDLER, syncId, playerInventory);
-    }
-    public static DomainPillarScreenHandler create(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        return new DomainPillarScreenHandler(DEModScreenHandlers.DOMAIN_PILLAR_SCREEN_HANDLER, syncId, playerInventory, inventory);
-    }
-    public DomainPillarScreenHandler(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(type, syncId);
-        this.inventory = inventory;
+    public DomainPillarScreenHandler(int syncId, PlayerInventory playerInventory, BlockEntity blockEntity) {
+        super(DEModScreenHandlers.DOMAIN_PILLAR_SCREEN_HANDLER, syncId);
+        this.inventory = (Inventory) blockEntity;
         checkSize(inventory, 1);
         inventory.onOpen(playerInventory.player);
 
