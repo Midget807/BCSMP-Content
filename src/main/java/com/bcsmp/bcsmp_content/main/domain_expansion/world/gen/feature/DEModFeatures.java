@@ -1,15 +1,11 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.feature;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.custom.ObsidianSpikeConfig;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.custom.ObsidianSpikeFeature;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.feature.custom.ObsidianSpikeConfig;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.feature.custom.ObsidianSpikeFeature;
 import net.minecraft.registry.*;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.placementmodifier.BiomePlacementModifier;
-import net.minecraft.world.gen.placementmodifier.CountPlacementModifier;
-import net.minecraft.world.gen.placementmodifier.SquarePlacementModifier;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

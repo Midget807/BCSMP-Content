@@ -1,7 +1,6 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.util;
 
-import com.bcsmp.bcsmp_content.BCSMPContentMain;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension.DEModDimensions;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;

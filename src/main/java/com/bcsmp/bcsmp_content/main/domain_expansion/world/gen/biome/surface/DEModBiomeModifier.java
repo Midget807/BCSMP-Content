@@ -1,10 +1,9 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.surface;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome.surface;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.DEModBiomes;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.DEModFeatures;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.custom.ObsidianSpikeFeature;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome.DEModBiomes;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.feature.DEModFeatures;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.minecraft.world.gen.GenerationStep;
 

@@ -1,19 +1,16 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.custom;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.feature.custom;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.mojang.serialization.Codec;
-import net.fabricmc.loader.impl.lib.sat4j.core.Vec;
 import net.minecraft.block.Blocks;
 import net.minecraft.structure.StructurePlacementData;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.StructureTemplateManager;
 import net.minecraft.structure.processor.BlockIgnoreStructureProcessor;
-import net.minecraft.text.Text;
 import net.minecraft.util.BlockRotation;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 

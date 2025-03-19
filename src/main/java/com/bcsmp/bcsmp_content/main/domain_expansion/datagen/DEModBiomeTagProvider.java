@@ -1,7 +1,7 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.DEModBiomes;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome.DEModBiomes;
 import net.minecraft.data.DataOutput;
 import net.minecraft.data.server.tag.vanilla.VanillaBiomeTagProvider;
 import net.minecraft.registry.RegistryKeys;

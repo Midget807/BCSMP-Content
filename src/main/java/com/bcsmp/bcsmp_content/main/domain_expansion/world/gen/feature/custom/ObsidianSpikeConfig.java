@@ -1,9 +1,8 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.feature.custom;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.feature.custom;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.gen.feature.FeatureConfig;
 
 import java.util.List;

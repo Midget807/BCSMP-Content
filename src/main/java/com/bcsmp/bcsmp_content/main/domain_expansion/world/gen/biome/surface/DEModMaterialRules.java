@@ -1,6 +1,6 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.surface;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome.surface;
 
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome.DEModBiomes;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome.DEModBiomes;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.world.gen.surfacebuilder.MaterialRules;

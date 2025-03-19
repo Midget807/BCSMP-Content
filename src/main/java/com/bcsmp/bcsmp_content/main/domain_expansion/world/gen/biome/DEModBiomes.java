@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.biome;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import net.minecraft.registry.Registerable;

@@ -1,7 +1,7 @@
 package com.bcsmp.bcsmp_content.mixin.domain_expansion;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension.DEModDimensions;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

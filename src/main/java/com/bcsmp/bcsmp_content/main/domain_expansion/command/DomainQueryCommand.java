@@ -1,7 +1,7 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.command;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DomainAvailabilityState;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension.DEModDimensions;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.registry.RegistryKey;

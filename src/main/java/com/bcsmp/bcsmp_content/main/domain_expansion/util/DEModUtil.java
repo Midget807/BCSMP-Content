@@ -3,7 +3,7 @@ package com.bcsmp.bcsmp_content.main.domain_expansion.util;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension.DEModDimensions;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -11,9 +11,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 public class DEModUtil {
     public static boolean shouldLockPlayerMovement(@Nullable LivingEntity entity) {

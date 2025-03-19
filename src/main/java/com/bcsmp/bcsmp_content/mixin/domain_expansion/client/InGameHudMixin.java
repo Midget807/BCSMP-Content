@@ -2,8 +2,8 @@ package com.bcsmp.bcsmp_content.mixin.domain_expansion.client;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
-import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModOverlayIds;
-import com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension.DEModDimensions;
+import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModTextureIds;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension.DEModDimensions;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -40,7 +40,7 @@ public abstract class InGameHudMixin {
     @Inject(method = "renderMiscOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getFrozenTicks()I", shift = At.Shift.BEFORE))
     private void domainExpansion$renderDomainDeathOverlay(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         if (this.client.player != null && this.client.player.hasStatusEffect(DEModEffects.DOMAIN_DEATH_EFFECT)) {
-            this.renderOverlay(context, DEModOverlayIds.DOMAIN_DEATH_OVERLAY, 0.3f);
+            this.renderOverlay(context, DEModTextureIds.DOMAIN_DEATH_OVERLAY, 0.3f);
         }
         if (this.client.player != null) {
             if (this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT) != null && this.client.player.hasStatusEffect(DEModEffects.DOMAIN_TP_EFFECT)) {
@@ -58,7 +58,7 @@ public abstract class InGameHudMixin {
                         this.shouldTick = false;
                     }
                 }
-                this.renderOverlay(context, DEModOverlayIds.DOMAIN_TP_OVERLAY, getDomainTpPercent((float) (this.domainTpEffectTicks / 20), this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration()));
+                this.renderOverlay(context, DEModTextureIds.DOMAIN_TP_OVERLAY, getDomainTpPercent((float) (this.domainTpEffectTicks / 20), this.client.player.getStatusEffect(DEModEffects.DOMAIN_TP_EFFECT).getDuration()));
             } else {
                 this.shouldTick = false;
             }

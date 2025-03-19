@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.worldgen.dimension;
+package com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.dimension;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import net.minecraft.registry.Registerable;
