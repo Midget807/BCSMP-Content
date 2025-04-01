@@ -17,6 +17,7 @@ public class EnableSubModCommand {
                                 .executes(context -> {
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DE_MOD_ID, true);
                                     executeEnableMod(context.getSource(), BCSMPContentMain.CF_MOD_ID, true);
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, true);
                                     return 1;
                                 })
                         )
@@ -32,12 +33,19 @@ public class EnableSubModCommand {
                                     return 1;
                                 })
                         )
+                        .then(literal("domain_robes")
+                                .executes(context -> {
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, true);
+                                    return 1;
+                                })
+                        )
                 )
                 .then(literal("disable")
                         .then(literal("all")
                                 .executes(context -> {
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DE_MOD_ID, false);
                                     executeEnableMod(context.getSource(), BCSMPContentMain.CF_MOD_ID, false);
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, false);
                                     return 1;
                                 })
                         )
@@ -50,6 +58,12 @@ public class EnableSubModCommand {
                         .then(literal("charter_fix")
                                 .executes(context -> {
                                     executeEnableMod(context.getSource(), BCSMPContentMain.CF_MOD_ID, false);
+                                    return 1;
+                                })
+                        )
+                        .then(literal("domain_robes")
+                                .executes(context -> {
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, false);
                                     return 1;
                                 })
                         )
@@ -59,6 +73,7 @@ public class EnableSubModCommand {
                                 .executes(context -> {
                                     queryModEnabled(context.getSource(), BCSMPContentMain.DE_MOD_ID);
                                     queryModEnabled(context.getSource(), BCSMPContentMain.CF_MOD_ID);
+                                    queryModEnabled(context.getSource(), BCSMPContentMain.DR_MOD_ID);
                                     return 1;
                                 })
                         )
@@ -71,6 +86,12 @@ public class EnableSubModCommand {
                         .then(literal("charter_fix")
                                 .executes(context -> {
                                     queryModEnabled(context.getSource(), BCSMPContentMain.CF_MOD_ID);
+                                    return 1;
+                                })
+                        )
+                        .then(literal("domain_robes")
+                                .executes(context -> {
+                                    queryModEnabled(context.getSource(), BCSMPContentMain.DR_MOD_ID);
                                     return 1;
                                 })
                         )
@@ -82,8 +103,9 @@ public class EnableSubModCommand {
         if (subModId.equals(BCSMPContentMain.DE_MOD_ID)) {
             source.sendFeedback(() -> Text.literal("Domain Expansion is enabled: " + state.getDomainExpansionModEnabled()), true);
         } else if (subModId.equals(BCSMPContentMain.CF_MOD_ID)) {
-
             source.sendFeedback(() -> Text.literal("Charter Fix is enabled: " + state.getCharterFixModEnabled()), true);
+        } else if (subModId.equals(BCSMPContentMain.DR_MOD_ID)) {
+            source.sendFeedback(() -> Text.literal("Domain Robes is enabled: " + state.getDomainRobesModEnabled()), true);
         }
     }
 
@@ -103,6 +125,13 @@ public class EnableSubModCommand {
                 state.setCharterFixModEnabled(false);
             }
             source.sendFeedback(() -> Text.literal("Charter Fix is enabled: " + enabled), true);
+        } else if (subModId.equals(BCSMPContentMain.DR_MOD_ID)) {
+            if (enabled) {
+                state.setDomainRobesModEnabled(true);
+            } else {
+                state.setDomainRobesModEnabled(false);
+            }
+            source.sendFeedback(() -> Text.literal("Domain Robes is enabled: " + enabled), true);
         }
     }
 }

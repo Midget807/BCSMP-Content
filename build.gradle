@@ -24,6 +24,10 @@ repositories {
 	maven {
 		url = "https://maven.terraformersmc.com/releases/"
 	}
+	maven {
+		name = "Resourceful Bees Maven"
+		url = "https://nexus.resourcefulbees.com/repository/maven-public/"
+	}
 }
 
 fabricApi {
@@ -53,6 +57,12 @@ dependencies {
   
   	include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"
   	include "dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cca_version}"*/
+
+	//ResourcefulLib
+	//modImplementation "com.teamresourceful.resourcefullib:resourcefullib-fabric-1.21:${project.resourceful_lib_version}"
+
+	//Resourceful Config
+	//modImplementation "com.teamresourceful.resourcefulconfig:resourcefulconfig-fabric-1.21:${project.resourceful_config_version}"
 }
 
 processResources {

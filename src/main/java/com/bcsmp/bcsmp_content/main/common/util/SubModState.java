@@ -9,24 +9,29 @@ import net.minecraft.world.PersistentStateManager;
 public class SubModState extends PersistentState {
     public static final String DOMAIN_EXPANSION_ENABLED_KEY = "DomainExpansionEnabled";
     public static final String CHARTER_FIX_ENABLED_KEY = "CharterFixEnabled";
+    public static final String DOMAIN_ROBES_ENABLED_KEY = "CharterFixEnabled";
     public boolean domainExpansionModEnabled = true;
     public boolean charterFixModEnabled = false;
+    public boolean domainRobesModEnabled = true;
     @Override
     public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putBoolean(DOMAIN_EXPANSION_ENABLED_KEY, domainExpansionModEnabled);
         nbt.putBoolean(CHARTER_FIX_ENABLED_KEY, charterFixModEnabled);
+        nbt.putBoolean(DOMAIN_ROBES_ENABLED_KEY, domainRobesModEnabled);
         return nbt;
     }
     public static SubModState createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         SubModState state = new SubModState();
         state.domainExpansionModEnabled = nbt.getBoolean(DOMAIN_EXPANSION_ENABLED_KEY);
         state.charterFixModEnabled = nbt.getBoolean(CHARTER_FIX_ENABLED_KEY);
+        state.domainRobesModEnabled = nbt.getBoolean(DOMAIN_ROBES_ENABLED_KEY);
         return state;
     }
     public static SubModState createNew() {
         SubModState state = new SubModState();
         state.domainExpansionModEnabled = true;
         state.charterFixModEnabled = false;
+        state.domainRobesModEnabled = true;
         return state;
     }
     public static final Type<SubModState> type = new Type<>(
@@ -53,5 +58,12 @@ public class SubModState extends PersistentState {
     }
     public boolean getCharterFixModEnabled() {
         return this.charterFixModEnabled;
+    }
+
+    public void setDomainRobesModEnabled(boolean domainRobesModEnabled) {
+        this.domainRobesModEnabled = domainRobesModEnabled;
+    }
+    public boolean getDomainRobesModEnabled() {
+        return this.domainRobesModEnabled;
     }
 }

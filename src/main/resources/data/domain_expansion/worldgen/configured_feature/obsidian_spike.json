@@ -1,7 +1,7 @@
 {
   "type": "domain_expansion:obsidian_spike",
   "config": {
-    "obsidian_spikes": [
+    "obsidian_spike_structures": [
       "domain_expansion:obsidian_spike/obsidian_spike_thin",
       "domain_expansion:obsidian_spike/obsidian_spike_curved",
       "domain_expansion:obsidian_spike/obsidian_spike_wide"
