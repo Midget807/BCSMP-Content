@@ -6,6 +6,7 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.particle.custom.PillarActiv
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.DEModScreenHandlers;
 import com.bcsmp.bcsmp_content.main.domain_expansion.screen.custom.client.DomainPillarScreen;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 
