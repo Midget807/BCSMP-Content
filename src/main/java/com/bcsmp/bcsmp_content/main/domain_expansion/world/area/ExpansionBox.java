@@ -40,7 +40,7 @@ public class ExpansionBox {
      * Tests to see if each coordinate component is within the bounds of their respective limiting axis.
      * E.g. {@code yMoreDown} checks if the entity y-coordinate is greater than {@link #getBoundDown()} bound.
      * If so, it means the entity is within the bounds of the border.
-     * <br></br>
+     * <br>
      * {@code test} provides the smallest from a bound within the x-axis.
      * E.g. if the entity is within the eastern half of the box, the x distance is the distance to the east boundary.
      * The x distance is then compared to each half along the other axes to get the min value from a boundary.
