@@ -37,7 +37,7 @@ import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler> implements ScreenHandlerProvider<DomainPillarScreenHandler> {
-    private static final Identifier TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_window.png");
+    private static final Identifier TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_pillar.png");
     private static final Identifier DOMAIN_1_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_1.png");
     private static final Identifier DOMAIN_2_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_2.png");
     private static final Identifier DOMAIN_3_TEXTURE = BCSMPContentMain.domainExpansionId("textures/gui/container/domain_3.png");
@@ -93,11 +93,11 @@ public class DomainPillarScreen extends HandledScreen<DomainPillarScreenHandler>
                             this.getScreenHandler().getSlot(0).markDirty();
                             serverOwnerPlayer.teleport(domain, 0, 0, 0, 0.0f, 0.0f);
 
-                            if (domain != null) {
+                            /*if (domain != null) {
                                 WorldBorder worldBorder = domain.getWorldBorder();//todo requires multi border i think
                                 worldBorder.setCenter(0.0, 0.0);
                                 worldBorder.setSize(radius * 2 + 1);
-                            }
+                            }*/
                             DomainAvailabilityState.setDomainUnavailable(domainKey, server);
                         } else {
                             this.client.player.sendMessage(Text.literal("All domains are occupied").formatted(Formatting.RED), true);
