@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "X": {
+      "tag": "domain_expansion:pillar_soul_blocks"
+    }
+  },
+  "pattern": [
+    "SDS",
+    "SDS",
+    "SXS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "domain_expansion:domain_pillar"
+  }
+}
