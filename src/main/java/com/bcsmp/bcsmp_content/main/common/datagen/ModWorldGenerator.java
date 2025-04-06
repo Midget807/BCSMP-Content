@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
+package com.bcsmp.bcsmp_content.main.common.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
@@ -7,8 +7,8 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DEModWorldGenerator extends FabricDynamicRegistryProvider {
-    public DEModWorldGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+public class ModWorldGenerator extends FabricDynamicRegistryProvider {
+    public ModWorldGenerator(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
     }
 

@@ -1,6 +1,6 @@
 package com.bcsmp.bcsmp_content;
 
-import com.bcsmp.bcsmp_content.main.domain_expansion.datagen.*;
+import com.bcsmp.bcsmp_content.main.common.datagen.*;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.registry.RegistryBuilder;
@@ -10,13 +10,13 @@ public class BCSMPContentDataGenerator implements DataGeneratorEntrypoint {
 	public void onInitializeDataGenerator(FabricDataGenerator fabricDataGenerator) {
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
-		//Domain Expansion Mod
-		pack.addProvider(DEModModelProvider::new);
-		pack.addProvider(DEModBlockTagProvider::new);
-		pack.addProvider(DEModItemTagProvider::new);
-		pack.addProvider(DEModLootTableGenerator::new);
-		pack.addProvider(DEModRecipeProvider::new);
-		pack.addProvider(DEModWorldGenerator::new);
+		pack.addProvider(ModModelProvider::new);
+		pack.addProvider(ModBlockTagProvider::new);
+		pack.addProvider(ModItemTagProvider::new);
+		pack.addProvider(ModLootTableGenerator::new);
+		pack.addProvider(ModRecipeProvider::new);
+		pack.addProvider(ModWorldGenerator::new);
+
 	}
 
 	@Override

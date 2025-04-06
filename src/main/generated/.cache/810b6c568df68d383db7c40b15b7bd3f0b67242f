@@ -1,2 +1,3 @@
-// 1.20.1	2025-03-16T17:22:37.7708902	BCSMP Content/Tags for minecraft:item
-98cd58849cbd16789829c7438fc3d6eca79f8c71 data\domain_expansion\tags\items\pillar_soul_blocks.json
+// 1.21.1	2025-04-06T22:34:55.8035153	BCSMP Content/Tags for minecraft:item
+768531a5848804d22d5ad025572f3828cb4c5df7 data\minecraft\tags\item\dyeable.json
+d5aebde1fd1141df86b6ed4ace3f720504b32ab2 data\domain_expansion\tags\item\pillar_soul_blocks.json

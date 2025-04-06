@@ -1,19 +1,17 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
+package com.bcsmp.bcsmp_content.main.common.datagen;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
+import com.bcsmp.bcsmp_content.main.domain_robes.item.DRModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
-import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.client.*;
-import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.Items;
 
-public class DEModModelProvider extends FabricModelProvider {
+public class ModModelProvider extends FabricModelProvider {
 
-    public DEModModelProvider(FabricDataOutput output) {
+    public ModModelProvider(FabricDataOutput output) {
         super(output);
     }
 
@@ -33,5 +31,10 @@ public class DEModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(DEModItems.DEBUGGER, Items.STICK, Models.GENERATED);
         itemModelGenerator.register(DEModItems.DOMAIN_EXPANDER, Models.GENERATED);
         itemModelGenerator.register(DEModItems.DOMAIN_COMPRESSOR, Models.GENERATED);
+
+        itemModelGenerator.register(DRModItems.HOOD, Models.GENERATED);
+        itemModelGenerator.register(DRModItems.ROBE, Models.GENERATED);
+        itemModelGenerator.register(DRModItems.PANTS, Models.GENERATED);
+        itemModelGenerator.register(DRModItems.BOOTS, Models.GENERATED);
     }
 }

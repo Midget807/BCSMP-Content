@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
+package com.bcsmp.bcsmp_content.main.common.datagen;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -7,8 +7,8 @@ import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DEModLootTableGenerator extends FabricBlockLootTableProvider {
-    public DEModLootTableGenerator(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
+public class ModLootTableGenerator extends FabricBlockLootTableProvider {
+    public ModLootTableGenerator(FabricDataOutput dataOutput, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(dataOutput, registryLookup);
     }
 

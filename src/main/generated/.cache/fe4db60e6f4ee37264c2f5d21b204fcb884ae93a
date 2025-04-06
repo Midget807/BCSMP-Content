@@ -1,5 +1,5 @@
-// 1.20.1	2025-03-16T17:22:37.775487	BCSMP Content/Recipes
-f43d3df8eab8084e3477fdf47b7d74be65c6d512 data\bcsmp_content\recipes\domain_pillar.json
-7e49fb4d96d44a3e9191e9e530fd7ec169e2b853 data\bcsmp_content\advancements\recipes\misc\domain_expander.json
-9b6e062562de516dfa9c70d4f49301be26fc6437 data\bcsmp_content\advancements\recipes\misc\domain_pillar.json
-aaba86c989587ae8953412a3de15d3e1a1c0a62b data\bcsmp_content\recipes\domain_expander.json
+// 1.21.1	2025-04-06T22:34:55.8050405	BCSMP Content/Recipes
+ed3df35e57fad8229eb226465369f3bf2b639ba6 data\bcsmp_content\advancement\recipes\combat\domain_expander.json
+de9ca2975b36a97ea27909f1115559e82ec8e60f data\bcsmp_content\recipe\domain_pillar.json
+c0dbc16c87994cbf304a48d3698024687afd4439 data\bcsmp_content\advancement\recipes\combat\domain_pillar.json
+78c2672fd46fc1dceb18bf5d0195629105d8d866 data\bcsmp_content\recipe\domain_expander.json

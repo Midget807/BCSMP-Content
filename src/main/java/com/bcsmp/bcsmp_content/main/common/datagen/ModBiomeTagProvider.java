@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
+package com.bcsmp.bcsmp_content.main.common.datagen;
 
 import com.bcsmp.bcsmp_content.BCSMPContentMain;
 import com.bcsmp.bcsmp_content.main.domain_expansion.world.gen.biome.DEModBiomes;
@@ -11,9 +11,9 @@ import net.minecraft.world.biome.Biome;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DEModBiomeTagProvider extends VanillaBiomeTagProvider {
+public class ModBiomeTagProvider extends VanillaBiomeTagProvider {
     public static final TagKey<Biome> DARK_PLAINS = TagKey.of(RegistryKeys.BIOME, BCSMPContentMain.domainExpansionId("dark_plains"));
-    public DEModBiomeTagProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookupFuture) {
+    public ModBiomeTagProvider(DataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookupFuture) {
         super(output, registryLookupFuture);
     }
 

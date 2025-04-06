@@ -1,4 +1,4 @@
-package com.bcsmp.bcsmp_content.main.domain_expansion.datagen;
+package com.bcsmp.bcsmp_content.main.common.datagen;
 
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
@@ -13,8 +13,8 @@ import net.minecraft.util.Identifier;
 
 import java.util.concurrent.CompletableFuture;
 
-public class DEModRecipeProvider extends FabricRecipeProvider {
-    public DEModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryFuture) {
+public class ModRecipeProvider extends FabricRecipeProvider {
+    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryFuture) {
         super(output, registryFuture);
     }
 
@@ -26,7 +26,7 @@ public class DEModRecipeProvider extends FabricRecipeProvider {
                 .pattern("SXS")
                 .input('S', Items.STONE)
                 .input('D', Items.DIAMOND)
-                .input('X', DEModItemTagProvider.PILLAR_SOUL_BLOCKS)
+                .input('X', ModItemTagProvider.PILLAR_SOUL_BLOCKS)
                 .criterion(hasItem(Items.STONE), conditionsFromItem(Items.STONE))
                 .criterion(hasItem(Items.GOLD_INGOT), conditionsFromItem(Items.GOLD_INGOT))
                 .criterion(hasItem(Items.SOUL_SAND), conditionsFromItem(Items.SOUL_SAND))
