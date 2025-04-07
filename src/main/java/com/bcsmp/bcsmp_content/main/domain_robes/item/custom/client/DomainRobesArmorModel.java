@@ -39,10 +39,31 @@ public class DomainRobesArmorModel<T extends LivingEntity> extends BipedEntityMo
         ModelPartData rightLeg = data.getRoot().getChild(EntityModelPartNames.RIGHT_LEG);
         ModelPartData leftLeg = data.getRoot().getChild(EntityModelPartNames.LEFT_LEG);
 
-        ModelPartData hood = head.addChild("hood", ModelPartBuilder.create().uv(51, 64).cuboid(-4.5F, -11F, -4.5F, 9F, 6F, 9F, new Dilation(0.05F)), ModelTransform.pivot(0F, 0F, 0F));
-        ModelPartData hatTip = hood.addChild("hatTip", ModelPartBuilder.create().uv(100, 79).cuboid(-2.5F, -13.2F, -4.7F, 5F, 4F, 9F, new Dilation(0.05F)), ModelTransform.of(0F, 0F, 0F, -0.6545F, 0F, 0F));
-        ModelPartData hatStalk = hood.addChild("hatStalk", ModelPartBuilder.create().uv(87, 64).cuboid(-3.5F, -11.8F, -1.5F, 7F, 6F, 9F, new Dilation(0.05F)), ModelTransform.of(0F, 0F, 0F, 0.2618F, 0F, 0F));
-        ModelPartData hatRim = hood.addChild("hatRim", ModelPartBuilder.create().uv(0, 64).cuboid(-9F, -6F, -8.5F, 17F, 2F, 17F, new Dilation(0F)), ModelTransform.of(0F, 0F, 0F, 0F, 0F, 0.1309F));
+        /*ModelPartData hood = head.addChild("hood", ModelPartBuilder.create().uv(0, 0).cuboid(-4.5F, -32.5F, -4.5F, 9.0F, 9.0F, 9.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+
+        ModelPartData robe = body.addChild("robe", ModelPartBuilder.create().uv(0, 18).cuboid(-4.5F, -24.5F, -2.5F, 9.0F, 13.0F, 5.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        ModelPartData leftFlap = robe.addChild("leftFlap", ModelPartBuilder.create().uv(48, 16).cuboid(-2.0F, -1.0F, -2.5F, 2.0F, 11.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(4.5F, -11.6F, 0.0F, 0.0436F, 0.0F, -0.2618F));
+        ModelPartData rightFlap = robe.addChild("rightFlap", ModelPartBuilder.create().uv(36, 0).cuboid(0.0F, -1.0F, -2.5F, 2.0F, 11.0F, 5.0F, new Dilation(0.0F)), ModelTransform.of(-4.5F, -11.6F, 0.0F, 0.0436F, 0.0F, 0.2618F));
+        ModelPartData backFlap = robe.addChild("backFlap", ModelPartBuilder.create().uv(0, 36).cuboid(-4.5F, -1.0F, -2.0F, 9.0F, 11.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -11.5F, 2.5F, 0.2618F, 0.0F, 0.0F));
+
+        ModelPartData leftSleeve = leftArm.addChild("leftSleeve", ModelPartBuilder.create().uv(28, 18).cuboid(3.5F, -24.5F, -2.5F, 5.0F, 12.0F, 5.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        ModelPartData leftCuff = leftSleeve.addChild("leftCuff", ModelPartBuilder.create().uv(0, 49).cuboid(-2.5F, -5.0F, 0.0F, 5.0F, 5.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(6.0F, -12.5F, 2.5F, 0.6981F, 0.0F, 0.0F));
+
+        ModelPartData rightSleeve = rightArm.addChild("rightSleeve", ModelPartBuilder.create().uv(28, 35).cuboid(3.5F, -24.5F, -2.5F, 5.0F, 12.0F, 5.0F, new Dilation(0.0F)), ModelTransform.pivot(-12.0F, 24.0F, 0.0F));
+        ModelPartData rightCuff = rightSleeve.addChild("rightCuff", ModelPartBuilder.create().uv(50, 0).cuboid(-2.5F, -5.0F, 0.0F, 5.0F, 5.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(6.0F, -12.5F, 2.5F, 0.6981F, 0.0F, 0.0F));
+
+        ModelPartData leftPants = leftLeg.addChild("leftPants", ModelPartBuilder.create().uv(48, 32).cuboid(-4.0F, -12.0F, -2.0F, 4.0F, 10.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(4.0F, 24.0F, 0.0F));
+        ModelPartData frontLeftFlap = leftPants.addChild("frontLeftFlap", ModelPartBuilder.create().uv(18, 52).cuboid(0.0F, 0.0F, 0.0F, 4.0F, 11.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(-4.0F, -12.0F, -2.5F, -0.1309F, 0.0F, -0.0873F));
+
+        ModelPartData rightPants = rightLeg.addChild("rightPants", ModelPartBuilder.create().uv(48, 46).cuboid(-4.0F, -12.0F, -2.0F, 4.0F, 10.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        ModelPartData frontRightFlap = rightPants.addChild("frontRightFlap", ModelPartBuilder.create().uv(30, 52).cuboid(-4.0F, 0.0F, 0.0F, 4.0F, 11.0F, 2.0F, new Dilation(0.0F)), ModelTransform.of(0.0F, -12.0F, -2.5F, -0.1309F, 0.0F, 0.0873F));
+
+        ModelPartData leftBoot = leftLeg.addChild("leftBoot", ModelPartBuilder.create().uv(0, 58).cuboid(-1.0F, -4.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(1.0F, 24.0F, 0.0F));
+
+        ModelPartData rightBoot = rightLeg.addChild("rightBoot", ModelPartBuilder.create().uv(42, 60).cuboid(-4.0F, -4.0F, -2.0F, 4.0F, 4.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+*/
+
+        ModelPartData hood = head.addChild("hood", ModelPartBuilder.create().uv(0, 84).cuboid(-4.5F, -8.5F, -4.5F, 9F, 9F, 9F, new Dilation(0.11F)), ModelTransform.pivot(0F, 0F, 0F));
 
         ModelPartData robe = body.addChild("robe", ModelPartBuilder.create().uv(0, 83).cuboid(-4.5F, -0.5F, -2.5F, 9F, 13F, 5F, new Dilation(0.05F)).uv(28, 83).cuboid(-5F, -0.5F, -2.5F, 10F, 13F, 5F, new Dilation(0.1F)), ModelTransform.pivot(0F, 0F, 0F));
         ModelPartData leftFlap = robe.addChild("leftFlap", ModelPartBuilder.create().uv(36, 101).cuboid(-2.5F, 12.6F, -0.95F, 5F, 9F, 2F, new Dilation(0F)), ModelTransform.of(0F, 0F, 0F, 0.2618F, 1.5708F, 0F));
