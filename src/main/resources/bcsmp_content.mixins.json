@@ -8,6 +8,7 @@
     "domain_expansion.EntityMixin",
     "domain_expansion.PlayerEntityMixin",
     "domain_robes.ItemEntityMixin",
+    "domain_robes.client.PlayerEntityRendererMixin",
     "domain_robes.SpyglassItemMixin"
   ],
   "client": [
@@ -18,7 +19,8 @@
     "domain_expansion.client.KeyboardMixin",
     "domain_expansion.client.MouseMixin",
     "domain_expansion.client.WorldRendererMixin",
-    "domain_robes.client.ItemColorsMixin"
+    "domain_robes.client.ItemColorsMixin",
+    "domain_robes.client.AbstractClientPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,3 +2,5 @@ accessWidener v2 named
 accessible method net/minecraft/client/render/RenderPhase startDrawing ()V
 accessible field net/minecraft/client/render/WorldRenderer client Lnet/minecraft/client/MinecraftClient;
 accessible field net/minecraft/client/render/GameRenderer camera Lnet/minecraft/client/render/Camera;
+accessible method net/minecraft/entity/LivingEntity clearPotionSwirls ()V
+accessible method net/minecraft/entity/LivingEntity updatePotionSwirls ()V

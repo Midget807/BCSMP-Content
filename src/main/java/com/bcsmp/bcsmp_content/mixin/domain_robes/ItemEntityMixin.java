@@ -45,8 +45,6 @@ public abstract class ItemEntityMixin extends Entity implements Ownable, Weaving
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;tick()V"))
     private void domainRobes$processDimensionalString(CallbackInfo ci) {
-        SubModState subModState = SubModState.getServerState(this.getWorld().getServer());
-        if (subModState.domainRobesModEnabled) {
             if (this.getWorld().getBlockState(this.getBlockPos().down(1)).isOf(Blocks.LOOM)) {
                 if (this.weavingTicks >= 100) {
                     int stackSize = this.getStack().getCount();
@@ -77,6 +75,5 @@ public abstract class ItemEntityMixin extends Entity implements Ownable, Weaving
                     }
                 }
             }
-        }
     }
 }

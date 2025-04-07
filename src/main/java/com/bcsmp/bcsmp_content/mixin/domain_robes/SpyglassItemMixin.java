@@ -39,8 +39,7 @@ public abstract class SpyglassItemMixin extends Item implements SpyglassSearch {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        SubModState subModState = SubModState.getServerState(user.getServer());
-        if (subModState.getDomainRobesModEnabled()) {
+
             PlayerEntity player = (PlayerEntity) user;
             if ((player.getAbilities().creativeMode || player.totalExperience >= 50) && player.getStackInHand(Hand.OFF_HAND).isOf(DRModItems.INTERDIMENSIONAL_LENS) && player.isSneaking()) {
                 if (!world.isClient) {
@@ -60,7 +59,7 @@ public abstract class SpyglassItemMixin extends Item implements SpyglassSearch {
                         this.searchTicks = 0;
                     }
                 }
-            }
+
         }
     }
     @Inject(method = "onStoppedUsing", at = @At("HEAD"))
