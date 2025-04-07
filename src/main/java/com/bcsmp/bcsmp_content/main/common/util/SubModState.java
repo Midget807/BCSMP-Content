@@ -9,15 +9,18 @@ import net.minecraft.world.PersistentStateManager;
 public class SubModState extends PersistentState {
     public static final String DOMAIN_EXPANSION_ENABLED_KEY = "DomainExpansionEnabled";
     public static final String CHARTER_FIX_ENABLED_KEY = "CharterFixEnabled";
-    public static final String DOMAIN_ROBES_ENABLED_KEY = "CharterFixEnabled";
+    public static final String DOMAIN_ROBES_ENABLED_KEY = "DomainRobesEnabled";
+    public static final String ARCANUS_CLOTHES_ENABLED_KEY = "ArcanusClothesEnabled";
     public boolean domainExpansionModEnabled = true;
     public boolean charterFixModEnabled = false;
     public boolean domainRobesModEnabled = true;
+    public boolean arcanusClothesModEnabled = true;
     @Override
     public NbtCompound writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         nbt.putBoolean(DOMAIN_EXPANSION_ENABLED_KEY, domainExpansionModEnabled);
         nbt.putBoolean(CHARTER_FIX_ENABLED_KEY, charterFixModEnabled);
         nbt.putBoolean(DOMAIN_ROBES_ENABLED_KEY, domainRobesModEnabled);
+        nbt.putBoolean(ARCANUS_CLOTHES_ENABLED_KEY, arcanusClothesModEnabled);
         return nbt;
     }
     public static SubModState createFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
@@ -25,6 +28,7 @@ public class SubModState extends PersistentState {
         state.domainExpansionModEnabled = nbt.getBoolean(DOMAIN_EXPANSION_ENABLED_KEY);
         state.charterFixModEnabled = nbt.getBoolean(CHARTER_FIX_ENABLED_KEY);
         state.domainRobesModEnabled = nbt.getBoolean(DOMAIN_ROBES_ENABLED_KEY);
+        state.arcanusClothesModEnabled = nbt.getBoolean(ARCANUS_CLOTHES_ENABLED_KEY);
         return state;
     }
     public static SubModState createNew() {
@@ -32,6 +36,7 @@ public class SubModState extends PersistentState {
         state.domainExpansionModEnabled = true;
         state.charterFixModEnabled = false;
         state.domainRobesModEnabled = true;
+        state.arcanusClothesModEnabled = true;
         return state;
     }
     public static final Type<SubModState> type = new Type<>(
@@ -65,5 +70,12 @@ public class SubModState extends PersistentState {
     }
     public boolean getDomainRobesModEnabled() {
         return this.domainRobesModEnabled;
+    }
+
+    public void setArcanusClothesModEnabled(boolean arcanusClothesModEnabled) {
+        this.arcanusClothesModEnabled = arcanusClothesModEnabled;
+    }
+    public boolean getArcanusClothesModEnabled() {
+        return this.arcanusClothesModEnabled;
     }
 }

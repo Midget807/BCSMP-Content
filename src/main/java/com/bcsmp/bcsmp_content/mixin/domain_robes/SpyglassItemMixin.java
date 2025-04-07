@@ -1,6 +1,7 @@
 package com.bcsmp.bcsmp_content.mixin.domain_robes;
 
 import com.bcsmp.bcsmp_content.main.common.datagen.ModBlockTagProvider;
+import com.bcsmp.bcsmp_content.main.common.util.SubModState;
 import com.bcsmp.bcsmp_content.main.domain_robes.item.DRModItems;
 import com.bcsmp.bcsmp_content.main.domain_robes.item.custom.SpyglassSearch;
 import net.minecraft.entity.LivingEntity;
@@ -38,23 +39,26 @@ public abstract class SpyglassItemMixin extends Item implements SpyglassSearch {
 
     @Override
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        PlayerEntity player = (PlayerEntity) user;
-        if ((player.getAbilities().creativeMode || player.totalExperience >= 50) && player.getStackInHand(Hand.OFF_HAND).isOf(DRModItems.INTERDIMENSIONAL_LENS) && player.isSneaking()) {
-            if (!world.isClient) {
-                HitResult hitResult = user.raycast(4.0, 0.0f, false);
-                if (hitResult.getType() == HitResult.Type.BLOCK) {
-                    BlockHitResult blockHitResult = (BlockHitResult) hitResult;
-                    if (world.getBlockState(blockHitResult.getBlockPos()).isIn(ModBlockTagProvider.DIMENSIONAL_BLOCKS)) {
-                        this.searchTicks++;
-                        ((ServerWorld)world).spawnParticles(ParticleTypes.REVERSE_PORTAL, player.getX(), player.getY(), player.getZ(), 10, 0.1, 0.1, 0.1, 0.1);
-                        if (this.searchTicks >= 5 * 20) {
-                            player.giveItemStack(new ItemStack(DRModItems.DIMENSIONAL_STRING));
-                            player.addExperience(-50);
-                            searchTicks = 0;
+        SubModState subModState = SubModState.getServerState(user.getServer());
+        if (subModState.getDomainRobesModEnabled()) {
+            PlayerEntity player = (PlayerEntity) user;
+            if ((player.getAbilities().creativeMode || player.totalExperience >= 50) && player.getStackInHand(Hand.OFF_HAND).isOf(DRModItems.INTERDIMENSIONAL_LENS) && player.isSneaking()) {
+                if (!world.isClient) {
+                    HitResult hitResult = user.raycast(4.0, 0.0f, false);
+                    if (hitResult.getType() == HitResult.Type.BLOCK) {
+                        BlockHitResult blockHitResult = (BlockHitResult) hitResult;
+                        if (world.getBlockState(blockHitResult.getBlockPos()).isIn(ModBlockTagProvider.DIMENSIONAL_BLOCKS)) {
+                            this.searchTicks++;
+                            ((ServerWorld) world).spawnParticles(ParticleTypes.REVERSE_PORTAL, player.getX(), player.getY(), player.getZ(), 10, 0.1, 0.1, 0.1, 0.1);
+                            if (this.searchTicks >= 5 * 20) {
+                                player.giveItemStack(new ItemStack(DRModItems.DIMENSIONAL_STRING));
+                                player.addExperience(-50);
+                                searchTicks = 0;
+                            }
                         }
+                    } else {
+                        this.searchTicks = 0;
                     }
-                } else {
-                    this.searchTicks = 0;
                 }
             }
         }

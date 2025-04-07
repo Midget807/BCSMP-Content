@@ -1,5 +1,6 @@
 package com.bcsmp.bcsmp_content.mixin.common;
 
+import com.bcsmp.bcsmp_content.main.common.util.CommonModUtil;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModUtil;
 import com.bcsmp.bcsmp_content.main.common.util.SubModState;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -31,16 +32,31 @@ public abstract class BlockDisabledModCrafting extends AbstractRecipeScreenHandl
 
 
     @Inject(method = "updateResult", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/CraftingResultInventory;setStack(ILnet/minecraft/item/ItemStack;)V"), cancellable = true)
-    private static void bcsmp$blockDomainExpansionCrafting(ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory, @Nullable RecipeEntry<CraftingRecipe> recipe, CallbackInfo ci, @Local ItemStack itemStack) {
+    private static void bcsmp$blockCrafting(ScreenHandler handler, World world, PlayerEntity player, RecipeInputInventory craftingInventory, CraftingResultInventory resultInventory, @Nullable RecipeEntry<CraftingRecipe> recipe, CallbackInfo ci, @Local ItemStack itemStack) {
         SubModState state = SubModState.getServerState(player.getServer());
         if (!state.getDomainExpansionModEnabled()) {
-            for (Item item : DEModUtil.getDomainExpansionItems()) {
+            for (Item item : CommonModUtil.getDomainExpansionItems()) {
                 if (itemStack.getItem() == item) {
                     handler.setPreviousTrackedSlot(0, ItemStack.EMPTY);
                     ci.cancel();
                 }
             }
         }
-
+        if (!state.getDomainRobesModEnabled()) {
+            for (Item item : CommonModUtil.getDomainRobesItems()) {
+                if (itemStack.getItem() == item) {
+                    handler.setPreviousTrackedSlot(0, ItemStack.EMPTY);
+                    ci.cancel();
+                }
+            }
+        }
+        if (!state.getArcanusClothesModEnabled()) {
+            for (Item item : CommonModUtil.getArcanusClothesItems()) {
+                if (itemStack.getItem() == item) {
+                    handler.setPreviousTrackedSlot(0, ItemStack.EMPTY);
+                    ci.cancel();
+                }
+            }
+        }
     }
 }

@@ -19,12 +19,6 @@ public class DEModUtil {
                 !entity.isSpectator() &&
                 !(entity instanceof PlayerEntity player && player.isCreative());
     }
-    public static DefaultedList<Item> getDomainExpansionItems() {
-        DefaultedList<Item> domainExpansionItems = DefaultedList.of();
-        domainExpansionItems.add(DEModItems.DOMAIN_EXPANDER);
-        domainExpansionItems.add(DEModBlocks.DOMAIN_PILLAR.asItem());
-        return domainExpansionItems;
-    }
     public static DefaultedList<RegistryKey<World>> getDomainKeys() {
         DefaultedList<RegistryKey<World>> domainKeys = DefaultedList.of();
         domainKeys.add(DEModDimensions.DOMAIN_1_LEVEL_KEY);

@@ -13,7 +13,6 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.config.DEModMidnightConfig;
 import com.bcsmp.bcsmp_content.main.domain_expansion.effect.DEModEffects;
 import com.bcsmp.bcsmp_content.main.domain_expansion.entity.DEModAttributes;
 import com.bcsmp.bcsmp_content.main.domain_expansion.entity.DEModEntities;
-import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItemGroups;
 import com.bcsmp.bcsmp_content.main.domain_expansion.item.DEModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.bcsmp_content.main.domain_expansion.particle.DEModParticles;
@@ -68,7 +67,6 @@ public class BCSMPContentMain implements ModInitializer {
 		MidnightConfig.init(DE_MOD_ID, DEModMidnightConfig.class);
 
 		DEModItems.registerDomainExpansionItems();
-		DEModItemGroups.registerDomainExpansionItemGroups();
 		DEModBlocks.registerDomainExpansionBlocks();
 		DEModBlockEntities.registerDomainExpansionBlockEntities();
 		DEModEntities.registerDomainExpansionEntities();

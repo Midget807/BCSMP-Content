@@ -18,6 +18,7 @@ public class EnableSubModCommand {
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DE_MOD_ID, true);
                                     executeEnableMod(context.getSource(), BCSMPContentMain.CF_MOD_ID, true);
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, true);
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.AC_MOD_ID, true);
                                     return 1;
                                 })
                         )
@@ -39,6 +40,12 @@ public class EnableSubModCommand {
                                     return 1;
                                 })
                         )
+                        .then(literal("arcanus_clothes")
+                                .executes(context -> {
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.AC_MOD_ID, true);
+                                    return 1;
+                                })
+                        )
                 )
                 .then(literal("disable")
                         .then(literal("all")
@@ -46,6 +53,7 @@ public class EnableSubModCommand {
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DE_MOD_ID, false);
                                     executeEnableMod(context.getSource(), BCSMPContentMain.CF_MOD_ID, false);
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, false);
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.AC_MOD_ID, false);
                                     return 1;
                                 })
                         )
@@ -64,6 +72,12 @@ public class EnableSubModCommand {
                         .then(literal("domain_robes")
                                 .executes(context -> {
                                     executeEnableMod(context.getSource(), BCSMPContentMain.DR_MOD_ID, false);
+                                    return 1;
+                                })
+                        )
+                        .then(literal("arcanus_clothes")
+                                .executes(context -> {
+                                    executeEnableMod(context.getSource(), BCSMPContentMain.AC_MOD_ID, false);
                                     return 1;
                                 })
                         )
@@ -74,6 +88,7 @@ public class EnableSubModCommand {
                                     queryModEnabled(context.getSource(), BCSMPContentMain.DE_MOD_ID);
                                     queryModEnabled(context.getSource(), BCSMPContentMain.CF_MOD_ID);
                                     queryModEnabled(context.getSource(), BCSMPContentMain.DR_MOD_ID);
+                                    queryModEnabled(context.getSource(), BCSMPContentMain.AC_MOD_ID);
                                     return 1;
                                 })
                         )
@@ -92,6 +107,12 @@ public class EnableSubModCommand {
                         .then(literal("domain_robes")
                                 .executes(context -> {
                                     queryModEnabled(context.getSource(), BCSMPContentMain.DR_MOD_ID);
+                                    return 1;
+                                })
+                        )
+                        .then(literal("arcanus_clothes")
+                                .executes(context -> {
+                                    queryModEnabled(context.getSource(), BCSMPContentMain.AC_MOD_ID);
                                     return 1;
                                 })
                         )
@@ -106,6 +127,8 @@ public class EnableSubModCommand {
             source.sendFeedback(() -> Text.literal("Charter Fix is enabled: " + state.getCharterFixModEnabled()), true);
         } else if (subModId.equals(BCSMPContentMain.DR_MOD_ID)) {
             source.sendFeedback(() -> Text.literal("Domain Robes is enabled: " + state.getDomainRobesModEnabled()), true);
+        } else if (subModId.equals(BCSMPContentMain.AC_MOD_ID)) {
+            source.sendFeedback(() -> Text.literal("Arcanus Clothes is enabled: " + state.getArcanusClothesModEnabled()), true);
         }
     }
 
@@ -132,6 +155,13 @@ public class EnableSubModCommand {
                 state.setDomainRobesModEnabled(false);
             }
             source.sendFeedback(() -> Text.literal("Domain Robes is enabled: " + enabled), true);
+        } else if (subModId.equals(BCSMPContentMain.AC_MOD_ID)) {
+            if (enabled) {
+                state.setArcanusClothesModEnabled(true);
+            } else {
+                state.setArcanusClothesModEnabled(false);
+            }
+            source.sendFeedback(() -> Text.literal("Arcanus Clothes is enabled: " + enabled), true);
         }
     }
 }
