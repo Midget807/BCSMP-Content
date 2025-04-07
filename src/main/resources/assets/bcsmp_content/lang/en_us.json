@@ -1,16 +1,29 @@
 {
-    "item.domain_expansion.debugger": "Debugger",
-
-    "container.domain_expansion.domain_pillar_title": "Domain Pillar",
-
     "block.domain_expansion.domain_pillar": "Domain Pillar",
-
-    "item.domain_expansion.domain_expander": "Domain Expander",
-    "item.domain_expansion.domain_compressor": "Domain Compressor",
-
-    "domain_expansion.midnightconfig.title": "Domain Expansion",
+    "container.domain_expansion.domain_pillar_title": "Domain Pillar",
+    "domain_expansion.midnightconfig.domainTpEffectFade": "Fade Duration",
     "domain_expansion.midnightconfig.domainTpEffectText": "Domain Teleport Effect",
-    "domain_expansion.midnightconfig.domainTpEffectFade": "Fade Duration"
+    "domain_expansion.midnightconfig.title": "Domain Expansion",
+    "item.domain_expansion.debugger": "Debugger",
+    "item.domain_expansion.domain_compressor": "Domain Compressor",
+    "item.domain_expansion.domain_expander": "Domain Expander",
 
+    "block.domain_expansion.domain_obsidian": "Domain Obsidian",
+    "block.domain_expansion.withered_soil": "Withered Soil",
 
+    "item.domain_robes.domain_hood": "Domain Hood",
+    "item.domain_robes.domain_robe": "Domain Robe",
+    "item.domain_robes.domain_pants": "Domain Pants",
+    "item.domain_robes.domain_boots": "Domain Boots",
+    "item.domain_robes.dimensional_string": "Dimensional String",
+    "item.domain_robes.dimensional_cloth": "Dimensional Cloth",
+    "item.domain_robes.interdimensional_lens": "Interdimensional Lens",
+
+    "item.arcanus_clothes.wizard_hat": "Wizard Hat",
+    "item.arcanus_clothes.wizard_robes": "Wizard Robes",
+    "item.arcanus_clothes.wizard_pants": "Wizard Pants",
+    "item.arcanus_clothes.wizard_boots": "Wizard Boots",
+
+    "itemGroup.bcsmp_content.global": "BCSMP Content",
+    "item.bcsmp_content.itemgroup_icon": "BCSMP Item Group Icon"
 }

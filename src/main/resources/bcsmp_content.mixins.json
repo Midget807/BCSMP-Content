@@ -6,15 +6,19 @@
     "charter_fix.LivingEntityMixin",
     "common.BlockDisabledModCrafting",
     "domain_expansion.EntityMixin",
-    "domain_expansion.PlayerEntityMixin"
+    "domain_expansion.PlayerEntityMixin",
+    "domain_robes.ItemEntityMixin",
+    "domain_robes.SpyglassItemMixin"
   ],
   "client": [
+    "arcanus.client.ItemColorsMixin",
     "charter_fix.client.KeyboardMixin",
     "charter_fix.client.MouseMixin",
     "domain_expansion.client.InGameHudMixin",
     "domain_expansion.client.KeyboardMixin",
     "domain_expansion.client.MouseMixin",
-    "domain_expansion.client.WorldRendererMixin"
+    "domain_expansion.client.WorldRendererMixin",
+    "domain_robes.client.ItemColorsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

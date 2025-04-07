@@ -1,7 +1,10 @@
 package com.bcsmp.bcsmp_content;
 
+import com.bcsmp.bcsmp_content.main.arcanus_clothes.item.ACModItems;
 import com.bcsmp.bcsmp_content.main.charter_fix.effect.CFModEffects;
 import com.bcsmp.bcsmp_content.main.common.command.CommonModCommands;
+import com.bcsmp.bcsmp_content.main.common.item.CommonModItemGroups;
+import com.bcsmp.bcsmp_content.main.common.item.CommonModItems;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlockEntities;
 import com.bcsmp.bcsmp_content.main.domain_expansion.block.DEModBlocks;
 import com.bcsmp.bcsmp_content.main.domain_expansion.command.DEModCommands;
@@ -33,9 +36,16 @@ public class BCSMPContentMain implements ModInitializer {
 	public static Identifier domainRobesId(String path) {
 		return Identifier.of(DR_MOD_ID, path);
 	}
+	public static Identifier arcanusClothesId(String path) {
+		return Identifier.of(AC_MOD_ID, path);
+	}
+	public static Identifier globalId(String path) {
+		return Identifier.of(GLOBAL_MOD_ID, path);
+	}
 	public static final String DE_MOD_ID = "domain_expansion";
 	public static final String CF_MOD_ID = "charter_fix";
 	public static final String DR_MOD_ID = "domain_robes";
+	public static final String AC_MOD_ID = "arcanus_clothes";
 	public static final String GLOBAL_MOD_ID = "bcsmp_content";
 	public static final Logger LOGGER = LoggerFactory.getLogger(GLOBAL_MOD_ID);
 
@@ -45,6 +55,9 @@ public class BCSMPContentMain implements ModInitializer {
 
 		//Common
 		CommonModCommands.registerCommonModCommands();
+		CommonModItems.registerCommonModItems();
+		CommonModItemGroups.registerCommonItemGroups();
+
 
 
 		//Charter Fix Mod
@@ -70,8 +83,10 @@ public class BCSMPContentMain implements ModInitializer {
 		DEModParticles.registerDomainExpansionParticles();
 
 
-		//Robes Mod
+		//Domain Robes Mod
 		DRModItems.registerDomainRobesItems();
 
+		//Arcanus Clothes Mod
+		ACModItems.registerArcanusClothesItems();
 	}
 }

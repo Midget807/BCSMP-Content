@@ -1,8 +1,8 @@
 {
   "values": [
-    "domain_robes:hood",
-    "domain_robes:robe",
-    "domain_robes:pants",
-    "domain_robes:boots"
+    "domain_robes:domain_hood",
+    "domain_robes:domain_robe",
+    "domain_robes:domain_pants",
+    "domain_robes:domain_boots"
   ]
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "bcsmp_content:item/itemgroup_icon"
+  }
+}

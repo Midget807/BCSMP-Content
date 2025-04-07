@@ -1,5 +1,8 @@
 package com.bcsmp.bcsmp_content;
 
+import com.bcsmp.bcsmp_content.main.arcanus_clothes.item.ACModItems;
+import com.bcsmp.bcsmp_content.main.arcanus_clothes.item.custom.client.WizardArmorModel;
+import com.bcsmp.bcsmp_content.main.arcanus_clothes.item.custom.client.WizardArmorRenderer;
 import com.bcsmp.bcsmp_content.main.domain_expansion.network.DEModMessages;
 import com.bcsmp.bcsmp_content.main.domain_expansion.particle.DEModParticles;
 import com.bcsmp.bcsmp_content.main.domain_expansion.particle.custom.PillarActiveParticle;
@@ -25,5 +28,8 @@ public class BCSMPContentClient implements ClientModInitializer {
 
         EntityModelLayerRegistry.registerModelLayer(DomainRobesArmorModel.MODEL_LAYER, DomainRobesArmorModel::getTexturedModelData);
         ArmorRenderer.register(new DomainRobesArmorRenderer(), DRModItems.HOOD, DRModItems.ROBE, DRModItems.PANTS, DRModItems.BOOTS);
+
+        EntityModelLayerRegistry.registerModelLayer(WizardArmorModel.MODEL_LAYER, WizardArmorModel::getTexturedModelData);
+        ArmorRenderer.register(new WizardArmorRenderer(), ACModItems.HAT, ACModItems.ROBES, ACModItems.PANTS, ACModItems.BOOTS);
     }
 }

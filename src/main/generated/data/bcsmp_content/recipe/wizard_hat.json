@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "X": {
+      "item": "minecraft:leather_helmet"
+    }
+  },
+  "pattern": [
+    "LL ",
+    "AXA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanus_clothes:wizard_hat"
+  }
+}

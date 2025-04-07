@@ -45,7 +45,7 @@ public abstract class ClientConfigurationNetworkHandlerMixin extends ClientCommo
     private void domainExpansion$addPackets(ReadyS2CPacket packet, CallbackInfo ci) {
         DynamicRegistryManager.Immutable immutable = this.openClientDataPack(
                 factory -> this.clientRegistries.createRegistryManager(factory, this.registryManager, this.connection.isLocal())
-        );
+        );/*
         this.connection.transitionInbound(DEModMessages.S2C.bind(RegistryByteBuf.makeFactory(immutable)), new ClientPlayNetworkHandler(
                 this.client,
                 this.connection,
@@ -64,7 +64,7 @@ public abstract class ClientConfigurationNetworkHandlerMixin extends ClientCommo
                         this.customReportDetails,
                         this.serverLinks
                 )
-        ));
+        ));*/
 
     }
 }

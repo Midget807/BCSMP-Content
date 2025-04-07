@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "domain_robes:item/domain_hood",
+    "layer1": "domain_robes:item/domain_hood_trim"
+  }
+}

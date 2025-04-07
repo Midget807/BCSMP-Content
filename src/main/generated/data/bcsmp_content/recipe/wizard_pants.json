@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "X": {
+      "item": "minecraft:leather_leggings"
+    }
+  },
+  "pattern": [
+    "LXL",
+    "A A"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanus_clothes:wizard_pants"
+  }
+}

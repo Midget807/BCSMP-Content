@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "domain_robes:item/pants"
+    "layer0": "arcanus_clothes:item/wizard_pants"
   }
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_dimensional_cloth": {
+      "conditions": {
+        "items": [
+          {
+            "items": "domain_robes:dimensional_cloth"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:domain_hood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_dimensional_cloth"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:domain_hood"
+    ]
+  }
+}

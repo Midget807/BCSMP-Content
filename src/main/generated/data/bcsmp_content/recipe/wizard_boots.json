@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "X": {
+      "item": "minecraft:leather_boots"
+    }
+  },
+  "pattern": [
+    "AXA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "arcanus_clothes:wizard_boots"
+  }
+}
