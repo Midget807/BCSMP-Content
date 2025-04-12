@@ -6,7 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Util;
 import net.minecraft.util.function.BooleanBiFunction;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
@@ -32,6 +32,35 @@ public class ExpansionBox {
     int maxRadius = 100;
     private ExpansionBox.Area area = new ExpansionBox.StaticArea(STATIC_AREA_SIZE);
     public static final ExpansionBox.Properties DEFAULT_AREA = new Properties(0.0, 0.0, 0.0, 0, 0, 0, 0, STATIC_AREA_SIZE, 0L, 0.0);
+
+    public boolean contains(BlockPos pos) {
+        return this.contains(pos.getX(), pos.getY(), pos.getZ());
+    }
+    public boolean contains(Vec3d pos) {
+        return this.contains(pos.x, pos.y, pos.z);
+    }
+    public boolean contains(Box box) {
+        return this.contains(box.minX, box.minY, box.minZ, box.maxX - 1.0E-5F, box.maxY - 1.0E-5F, box.maxZ - 1.0E-5F);
+    }
+    public boolean contains(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+        return this.contains(minX, minY, minZ) && this.contains(maxX, maxY, maxZ);
+    }
+    public boolean contains(double x, double y, double z) {
+        return this.contains(x, y, z, 0.0);
+    }
+    public boolean contains(double x, double y, double z, double margin) {
+        return x >= this.getBoundWest() - margin
+                && x < this.getBoundEast() + margin
+                && y >= this.getBoundDown() + margin
+                && y < this.getBoundUp() + margin
+                && z >= this.getBoundNorth() + margin
+                && z < this.getBoundSouth() + margin;
+    }
+
+    public boolean canCollide(Entity entity, Box box) {
+        double d = Math.max(MathHelper.absMax(box.getLengthX(), box.getLengthZ()), 1.0);
+        return this.getDistanceInsideBorder(entity) < d * 2.0 && this.contains(entity.getX(), entity.getY(), entity.getZ(), d);
+    }
 
     public double getDistanceInsideBorder(Entity entity) {
         return this.getDistanceInsideBorder(entity.getX(), entity.getY(), entity.getZ());

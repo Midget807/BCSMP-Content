@@ -8,6 +8,7 @@ import com.bcsmp.bcsmp_content.main.domain_expansion.util.DEModTextureIds;
 import com.bcsmp.bcsmp_content.main.domain_expansion.util.DebugState;
 import com.bcsmp.bcsmp_content.main.domain_expansion.world.area.ExpansionBox;
 import com.bcsmp.bcsmp_content.main.domain_expansion.world.area.ExpansionBoxListener;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.area.WorldExpansionBoxProvider;
 import com.bcsmp.bcsmp_content.main.domain_expansion.world.area.client.RenderExpansionBox;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -47,8 +48,8 @@ public class DebuggerItem extends Item {
         MinecraftServer server = player.getServer();
         if (server == null) return TypedActionResult.fail(handStack);
         DebugState debugState = DebugState.getServerState(server);
-        final ExpansionBox box = new ExpansionBox();
-        /*box.addListener(new ExpansionBoxListener() {
+        /*final ExpansionBox box = new ExpansionBox();
+        *//*box.addListener(new ExpansionBoxListener() {
             @Override
             public void onSizeChange(ExpansionBox box, double size) {
                 server.getPlayerManager().sendToAll(new ExpansionBoxSizeChangedPacket(box));
@@ -63,9 +64,13 @@ public class DebuggerItem extends Item {
             public void onCenterChanged(ExpansionBox box, double centerX, double centerY, double centerZ) {
                 server.getPlayerManager().sendToAll(new ExpansionBoxCenterChangedPacket(box));
             }
-        });*/
+        });*//*
         box.addListener(new ExpansionBoxListener.ExpansionBoxSyncer(box));
         box.load(box.write());
+        box.setCenter(0.0, -60.0, 0.0);
+        box.setSize(20);*/
+
+        final ExpansionBox box = ((WorldExpansionBoxProvider)world).createExpansionBox();
         box.setCenter(0.0, -60.0, 0.0);
         box.setSize(20);
 

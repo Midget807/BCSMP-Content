@@ -1,6 +1,10 @@
 package com.bcsmp.bcsmp_content.main.domain_expansion.world.area;
 
 public interface ExpansionBoxListener {
+    /**
+     * Used to send S2C packets for border updates, but IDK how to register packets mojang style.
+     * Hence, it's not used.
+     */
     void onSizeChange(ExpansionBox box, double size);
 
     void onInterpolateSize(ExpansionBox box, double fromSize, double toSize, long time);

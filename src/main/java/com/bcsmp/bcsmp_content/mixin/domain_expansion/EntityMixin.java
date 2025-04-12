@@ -1,5 +1,7 @@
 package com.bcsmp.bcsmp_content.mixin.domain_expansion;
 
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.area.ExpansionBoxCollision;
+import com.bcsmp.bcsmp_content.main.domain_expansion.world.area.WorldExpansionBoxProvider;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.minecraft.entity.Entity;
@@ -10,6 +12,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.command.CommandOutput;
 import net.minecraft.util.Nameable;
+import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 import net.minecraft.world.entity.EntityLike;
 import org.spongepowered.asm.mixin.Final;
@@ -26,6 +29,10 @@ public abstract class EntityMixin implements Nameable, EntityLike, CommandOutput
     @Unique
     private static final String TP_TICKS_KEY = "DomainTpEffectTicks";
     @Shadow @Final protected DataTracker dataTracker;
+
+    @Shadow public abstract World getWorld();
+
+    @Shadow public boolean groundCollision;
     private static final TrackedData<Integer> DOMAIN_TP_EFFECT_TICKS = DataTracker.registerData(Entity.class, TrackedDataHandlerRegistry.INTEGER);
     @Inject(method = "<init>", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/Entity;FROZEN_TICKS:Lnet/minecraft/entity/data/TrackedData;"))
     public void domainExpansion$addCustomData(EntityType<?> type, World world, CallbackInfo ci, @Local DataTracker.Builder builder) {
@@ -49,5 +56,12 @@ public abstract class EntityMixin implements Nameable, EntityLike, CommandOutput
     @Inject(method = "readNbt", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;setFrozenTicks(I)V"))
     public void domainExpansion$writeCustomData(NbtCompound nbt, CallbackInfo ci) {
         this.setDomainTpEffectTicks(nbt.getInt(TP_TICKS_KEY));
+    }
+
+    @Inject(method = "doesNotCollide(Lnet/minecraft/util/math/Box;)Z", at = @At("HEAD"), cancellable = true)
+    private void domainExpansion$handleExpansionBoxCollision(Box box, CallbackInfoReturnable<Boolean> cir) {
+        if (((ExpansionBoxCollision)this.getWorld()).isInExpansionBox((Entity)(Object)this, box)) {
+            cir.setReturnValue(false);
+        }
     }
 }
